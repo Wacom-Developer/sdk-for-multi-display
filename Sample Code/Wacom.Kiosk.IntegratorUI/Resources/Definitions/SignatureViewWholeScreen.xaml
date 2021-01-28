@@ -1,0 +1,29 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wacom.Kiosk.App"
+        mc:Ignorable="d"
+        x:Name="SignatureView"
+        Title="SignatureView" WindowStyle="None" Width="1920" Height="1080">
+
+    <Grid>
+        <!--This container is mandatory-->
+        <!--TODO ADD IN DOCUMENTATION-->
+        <Grid Name="SignatureContainer" Background="White">
+        </Grid>
+        <Grid Panel.ZIndex="2" HorizontalAlignment="Right" Width="150" Background="Transparent">
+            <StackPanel Panel.ZIndex="2" Orientation="Vertical" VerticalAlignment="Center">
+                <Button x:Name="AcceptSignature" Content="AcceptSignature" Width="100" Height="100" BorderThickness="0" HorizontalAlignment="Right" Margin="25,25,25,0" VerticalAlignment="Top">
+                </Button>
+                <Button x:Name="CancelSignature" Content="CancelSignature" Width="100" Height="100" BorderThickness="0" HorizontalAlignment="Right" Margin="25,25,25,0" VerticalAlignment="Top">
+                </Button>
+                <Button x:Name="ClearSignature" Content="ClearSignature" Width="100" Height="100" BorderThickness="0" HorizontalAlignment="Right" Margin="25,25,25,0" VerticalAlignment="Top">
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+
+</Window>

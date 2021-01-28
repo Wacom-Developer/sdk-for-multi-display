@@ -1,0 +1,33 @@
+﻿<Window x:Class="Wacom.Kiosk.IntegratorUI.ConfigureSignatureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wacom.Kiosk.IntegratorUI"
+        mc:Ignorable="d"
+        Title="ConfigureSignatureWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="0,10,10,0" VerticalAlignment="Top" Text="Signature XAML definition file path:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_signature_definition" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
+        <Button x:Name="button_filepicker_signature_path" Content="Browse..." Grid.Column="2" Margin="10,10,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_document_path_Click"/>
+
+        <TextBlock Grid.Column="0" Margin="0,40,10,0" VerticalAlignment="Top" Text="Signature configuration file path:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_signature_config" Grid.Column="1" Margin="10,40,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
+        <Button x:Name="button_filepicker_signature_config_path" Content="Browse..." Grid.Column="2" Margin="10,40,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_signature_config_path_Click"/>
+
+        <TextBlock Grid.Column="0" Margin="0,70,10,0" VerticalAlignment="Top" Text="Signature background image file path:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_signature_background" Grid.Column="1" Margin="10,70,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
+        <Button x:Name="button_filepicker_signature_backrgound_path" Content="Browse..." Grid.Column="2" Margin="10,70,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_signature_backrgound_path_Click"/>
+
+        <TextBlock Grid.Column="0" Margin="0,100,10,0" VerticalAlignment="Top" Text="Encryption Certificate:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_Encryption_Certificate" Grid.Column="1" Margin="10,100,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
+        <Button x:Name="button_filepicker_Encryption_Certificate_path" Content="Browse..." Grid.Column="2" Margin="10,100,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_Encryption_Certificate_path_Click"/>
+        
+        <Button x:Name="button_open_signature" Content="Open Signature" Grid.Column="1" Margin="10,130,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_open_signature_Click"/>
+    </Grid>
+</Window>

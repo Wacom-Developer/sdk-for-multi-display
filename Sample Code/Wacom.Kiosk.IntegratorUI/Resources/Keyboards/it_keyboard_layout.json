@@ -1,0 +1,29 @@
+{
+  "name": "it_IT",
+  "flag": "it_IT.pic",
+  "desc": "Italian",
+  "normal": [
+    "\\1234567890'ì",
+    "qwertyuiopè+",
+    "asdfghjklòàù",
+    "<zxcvbnm,.-"
+  ],
+  "shift": [
+    "|!\"£$%&/()=?^",
+    "QWERTYUIOPé*",
+    "ASDFGHJKLç°§",
+    ">ZXCVBNM;:_"
+  ],
+  "alt": [
+    "             ",
+    "  €       []",
+    "         @# ",
+    "           "
+  ],
+  "altshift": [
+    "             ",
+    "          {}",
+    "            ",
+    "           "
+  ]
+}

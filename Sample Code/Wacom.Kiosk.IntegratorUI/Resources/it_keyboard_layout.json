@@ -1,0 +1,29 @@
+{
+  "name": "it_IT",
+  "flag": "it_IT.png",
+  "desc": "no desk",
+  "normal": [
+    "testingW",
+    "testingWW",
+    "testingW",
+    "testingW"
+  ],
+  "shift": [
+    "TESTINGW",
+    "TESTINGW",
+    "TESTINGW",
+    "TESTINGW"
+  ],
+  "alt": [
+    "",
+    "",
+    "",
+    ""
+  ],
+  "altshift": [
+    "",
+    "",
+    "",
+    ""
+  ]
+}

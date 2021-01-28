@@ -1,0 +1,52 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wacom.Kiosk.App"
+        mc:Ignorable="d"
+        x:Name="SignatureView"
+        Title="SignatureView" WindowStyle="None" Width="1920" Height="1080">
+    <Grid>
+
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+            <ColumnDefinition Width="0.50*"></ColumnDefinition>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="025*"></RowDefinition>
+            <RowDefinition Height="050*"></RowDefinition>
+            <RowDefinition Height="025*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Source="BkgSignature.png" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+        <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="600" Height="100" FontSize="40" Content="Please apply your Signature"></Label>
+
+        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="2">
+            <!--This container is mandatory-->
+            <!--TODO ADD IN DOCUMENTATION-->
+            <Grid Grid.Row="1" Grid.Column="1" Name="SignatureContainer"  Background="White">
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Grid.Row="2"  HorizontalAlignment="Stretch">
+            <Button  x:Name="AcceptSignature" BorderThickness="0" Margin="25,0,25,0" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="left" >
+                <Button.Background>
+                    <ImageBrush ImageSource="ApproveSign.png"/>
+                </Button.Background>
+            </Button>
+            <Button  x:Name="CancelSignature" BorderThickness="0" Margin="25,0,25,0" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                <Button.Background>
+                    <ImageBrush ImageSource="CloseSign.png"/>
+                </Button.Background>
+            </Button>
+            <Button  x:Name="ClearSignature" BorderThickness="0" Margin="25,0,25,0" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                <Button.Background>
+                    <ImageBrush ImageSource="UndoSign.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
+

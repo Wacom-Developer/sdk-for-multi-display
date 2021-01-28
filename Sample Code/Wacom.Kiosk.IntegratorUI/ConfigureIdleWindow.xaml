@@ -1,0 +1,23 @@
+﻿<Window x:Class="Wacom.Kiosk.IntegratorUI.ConfigureIdleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wacom.Kiosk.IntegratorUI"
+        mc:Ignorable="d"
+        Title="ConfigureIdleWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.27*"></ColumnDefinition>
+            <ColumnDefinition Width="0.09*"></ColumnDefinition>
+            <ColumnDefinition Width="0.27*"></ColumnDefinition>
+            <ColumnDefinition Width="0.27*"></ColumnDefinition>
+            <ColumnDefinition Width="0.10*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="0,10,10,0" VerticalAlignment="Top" Text="Name of media group to update:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="text_box_media_group" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" Text="default" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20"/>
+        <ComboBox x:Name="combobox_update_type" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top"/>
+        <Button x:Name="button_filepicker_media" Content="Browse..." Grid.Column="3" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_media_Click"/>
+        <Button x:Name="button_update" Grid.Column="4" Margin="0,10,0,0" VerticalAlignment="Top" Content="Update" HorizontalAlignment="Center" Height="20" Click="button_update_Click"/>
+    </Grid>
+</Window>

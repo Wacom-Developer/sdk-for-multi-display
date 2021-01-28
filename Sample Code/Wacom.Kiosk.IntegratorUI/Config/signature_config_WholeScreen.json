@@ -1,0 +1,11 @@
+{
+  "X": 0,
+  "Y": 0,
+  "Width": 1920,
+  "Height": 1080,
+  "AreaPercent": 0.5,
+  "PenTrackingType": "Unlimited",
+  "SignatureViewType": "External",
+  "SignatureFormat": "Fss",
+  "StrokeColor": "#000080"
+}
