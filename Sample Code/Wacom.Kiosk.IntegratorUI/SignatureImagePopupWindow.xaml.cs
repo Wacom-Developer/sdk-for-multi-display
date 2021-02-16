@@ -21,7 +21,11 @@ namespace Wacom.Kiosk.IntegratorUI
         {
             InitializeComponent();
 
-            Background = new ImageBrush(signatureImage);
+            Background = new ImageBrush
+            {
+                ImageSource = signatureImage,
+                Stretch = Stretch.Uniform
+            };
         }
     }
 }
