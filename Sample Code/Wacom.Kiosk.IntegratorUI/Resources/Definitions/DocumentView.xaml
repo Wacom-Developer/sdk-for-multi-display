@@ -39,7 +39,7 @@
                 <ImageBrush ImageSource="arrow_right.png"/>
             </Button.Background>
         </Button>
-        <Grid x:Name="WacomKioskDocumentImageContainer" Width="1920" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  ShowGridLines="True">
+        <Grid x:Name="WacomKioskDocumentImageContainer" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  ShowGridLines="True">
         </Grid>
 
         <Button x:Name="ThumbnailsBtn" Grid.Row="2" Grid.Column="0" ToolTip="Show Thumbnail" BorderThickness="0" Width="75" Height="75" HorizontalAlignment="center" VerticalAlignment="Bottom">
