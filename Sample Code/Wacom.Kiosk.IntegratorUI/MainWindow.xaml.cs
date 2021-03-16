@@ -213,8 +213,13 @@ namespace Wacom.Kiosk.IntegratorUI
 
                 AppendLog(msg.ToString());
             });
-
             MessageHandlers.RegisterHandler(applicationExitHandler, logger);
+
+            MessageHandlers.RegisterHandler(new MessageHandler<TabletDetachedMessage>((msg) =>
+            {
+                AppendLog(msg.ToString());
+            }), logger);
+
 
             MessageHandlers.RegisterHandler(new MessageHandler<NotLicensedMessage>((msg) =>
             {
