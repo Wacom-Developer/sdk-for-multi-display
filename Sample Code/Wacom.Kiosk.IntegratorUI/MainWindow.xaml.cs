@@ -215,12 +215,6 @@ namespace Wacom.Kiosk.IntegratorUI
             });
             MessageHandlers.RegisterHandler(applicationExitHandler, logger);
 
-            MessageHandlers.RegisterHandler(new MessageHandler<TabletDetachedMessage>((msg) =>
-            {
-                AppendLog(msg.ToString());
-            }), logger);
-
-
             MessageHandlers.RegisterHandler(new MessageHandler<NotLicensedMessage>((msg) =>
             {
                 AppendLog("Feature not licensed");
