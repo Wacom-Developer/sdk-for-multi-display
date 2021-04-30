@@ -48,12 +48,12 @@
             </Button.Background>
         </Button>
 
-        <Button x:Name="BtnAcceptDoc" Grid.Row="2" Grid.Column="1"  BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Bottom">
+        <Button x:Name="DocumentAccepted" Grid.Row="2" Grid.Column="1"  BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Bottom">
             <Button.Background>
                 <ImageBrush ImageSource="DocAccept.png"/>
             </Button.Background>
         </Button>
-        <Button x:Name="BtnRejectDoc" Grid.Column="2" Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Bottom">
+        <Button x:Name="DocumentRejected" Grid.Column="2" Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Bottom">
             <Button.Background>
                 <ImageBrush ImageSource="DocReject.png"/>
             </Button.Background>

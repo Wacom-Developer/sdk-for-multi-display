@@ -61,7 +61,7 @@ namespace Wacom.Kiosk.IntegratorUI
             if (msg == null)
             {
                 System.Windows.MessageBox.Show("Wrong data provided. Please check your parameters.");
-                Close();
+                //Close();
                 return;
             }
 
@@ -70,6 +70,7 @@ namespace Wacom.Kiosk.IntegratorUI
             else
                 KioskServer.Mq.SendMessage(ClientIpAddress, msg.ToByteArray());
 
+            this.DialogResult = true;
             Close();
         }
 

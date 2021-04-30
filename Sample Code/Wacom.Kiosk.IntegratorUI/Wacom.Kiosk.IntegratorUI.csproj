@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.0.1</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,11 +50,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeSpire.PDF" Version="7.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.20.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.1.5" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.7" />
     <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
   </ItemGroup>
 
@@ -283,6 +284,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WacomDemoEncryptCertificate.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WacomDemoSigningCert.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WacomKiosk.pdf">
