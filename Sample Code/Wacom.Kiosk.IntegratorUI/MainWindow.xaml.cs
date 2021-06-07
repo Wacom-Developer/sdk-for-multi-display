@@ -253,17 +253,20 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Initiates toggling of Mirroring</summary>
         private void MirrorClick(object sender, RoutedEventArgs e)
         {
-            if (!bMirroring)
+            ActiveClient activeClient = KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+            if (activeClient != null)
             {
-                bMirroring = true;
-                SendMessage(new StartMirroringMessage(KioskServer.Sender).Build().ToByteArray());
+                if (!bMirroring)
+                {
+                    bMirroring = true;
+                    SendMessage(new StartMirroringMessage(KioskServer.Sender).Build().ToByteArray());
+                }
+                else
+                {
+                    bMirroring = false;
+                    SendMessage(new StopMirroringMessage(KioskServer.Sender).Build().ToByteArray());
+                }
             }
-            else
-            {
-                bMirroring = false;
-                SendMessage(new StopMirroringMessage(KioskServer.Sender).Build().ToByteArray());
-            }
-
         }
 
         /// <summary>Initiates toggling of Privacy Mode</summary>
@@ -647,7 +650,7 @@ namespace Wacom.Kiosk.IntegratorUI
                     document.Save(saveAs, saveFlags);
                 }
                 document.Dispose();
-
+                SendMessage(new OpenIdleMessage(KioskServer.Sender).Build().ToByteArray());
             }), logger);
 
             // Request field data for current page
