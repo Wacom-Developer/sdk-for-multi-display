@@ -418,13 +418,9 @@ namespace Wacom.Kiosk.IntegratorUI
                     {
                         // Sign the document
                         SetFieldValues(activeClient.DocumentContext.DocumentPath, out PdfDocument document, out PdfForms forms);
-                        var signedDocument = SignDocument(msg.Sender.Name, document, msg.SignatureMetadata, msg.SignaturePictureBytes);
-                        document.Dispose(); // Ensure existing file is closed
+                        SignDocument(msg.Sender.Name, document, msg.SignatureMetadata, msg.SignaturePictureBytes, saveAs);
 
                         activeClient.DocumentContext.DocumentPath = saveAs;
-
-                        SaveFlags saveFlags = SaveFlags.Incremental;
-                        signedDocument.Save(saveAs, saveFlags);
                     }
                     catch (Exception ex)
                     {
@@ -588,20 +584,20 @@ namespace Wacom.Kiosk.IntegratorUI
         }
 
         /// <summary>
-        /// Digitally signs a document and inserts a ahndwritten signature image
+        /// Digitally signs a document and inserts the image of a handwritten signature 
         /// </summary>
         /// <param name="clientName"></param>
         /// <param name="document">The document to sign</param>
         /// <param name="sigText">Biometric (FSS) signature data</param>
         /// <param name="sigImageBytes">Signature image data</param>
-        /// <returns>Signed PdfDocument</returns>
-        private PdfDocument SignDocument(string clientName, PdfDocument document, string sigText, byte[] sigImageBytes)
+        /// <param name="documentPath">file to save signed document to</param>
+        private void SignDocument(string clientName, PdfDocument document, string sigText, byte[] sigImageBytes, string documentPath)
         {
             ActiveClient activeClient = KioskServer.GetActiveClient(clientName);
 
             var docSigner = new DocumentSigner();
 
-            return docSigner.SignPDF(document, activeClient.DocumentContext.DocumentPageNumber, SignatureFieldName, sigText, sigImageBytes, SignatureDPI);
+            docSigner.SignPDF(document, activeClient.DocumentContext.DocumentPageNumber, SignatureFieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
         }
 
         /// <summary>
@@ -676,12 +672,6 @@ namespace Wacom.Kiosk.IntegratorUI
                     var acroFld = acroFields.Find(fld => fld.FullName == field.Key);
                     switch (acroFld.FieldType)
                     {
-                        case FormFieldTypes.FPDF_FORMFIELD_CHECKBOX:
-                            bool isChecked = (bool?)field.Value ?? false;
-                            Debug.Assert(acroFld.Controls.Count == 1);
-                            acroFld.Value = isChecked ? (acroFld.Controls[0].ExportValue ?? "Yes") : "Off";
-                            break;
-
                         case FormFieldTypes.FPDF_FORMFIELD_RADIOBUTTON:
                             foreach (var ctl in acroFld.Controls)
                             {

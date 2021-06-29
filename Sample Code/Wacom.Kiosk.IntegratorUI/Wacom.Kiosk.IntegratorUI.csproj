@@ -31,6 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\kiosk-mode-sdk\Wacom.Kiosk\Wacom.Kiosk.Pdf.Shared\JsonPdfSerializer.cs" Link="JsonPdfSerializer.cs" />
+    <Compile Include="..\..\..\kiosk-mode-sdk\Wacom.Kiosk\Wacom.Kiosk.Pdf\PdfHelper.cs" Link="PdfHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Resources\Definitions\DocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -283,10 +288,10 @@
     <None Update="Resources\Test3.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WacomDemoEncryptCertificate.cer">
+    <None Update="Resources\Wacom.Kiosk.IntegratorUI.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WacomDemoSigningCert.pfx">
+    <None Update="Resources\WacomDemoEncryptCertificate.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WacomKiosk.pdf">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -28,14 +29,15 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="sigText">Biometric (FSS) signature data</param>
         /// <param name="sigImageBytes">Signature image data</param>
         /// <param name="SignatureDPI">DPI of signature image</param>
-        /// <returns>Signed PdfDocument</returns>
-        public PdfDocument SignPDF(
+        /// <param name="documentPath">file to save signed document to</param>
+        public void SignPDF(
             PdfDocument document,
             int page,
             string fieldName,
             string sigText,
             byte[] sigImageBytes,
-            int SignatureDPI
+            int SignatureDPI,
+            string documentPath
             )
         {
             try
@@ -54,9 +56,10 @@ namespace Wacom.Kiosk.IntegratorUI
                         }
 
                         var stream = new MemoryStream();
-                        document.Save(stream, SaveFlags.NoIncremental);
+                        document.Save(stream, SaveFlags.Incremental);
                         document.Dispose();
-                        return PdfDocument.Load(SignWithSpire(stream, page, fieldName, sigText, sigImageBytes, SignatureDPI));
+
+                        SignWithSpire(stream, page, fieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
                     }
                 }
             }
@@ -65,8 +68,6 @@ namespace Wacom.Kiosk.IntegratorUI
                 Debug.WriteLine($"Exception: {ex}");
                 throw;
             }
-
-            return null;
         }
 
 
@@ -144,43 +145,38 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="sigText">Biometric (FSS) signature data</param>
         /// <param name="sigImageBytes">Signature image data</param>
         /// <param name="SignatureDPI">DPI of signature image</param>
-        /// <returns>Stream containing signed PDF</returns>
+        /// <param name="documentPath">file to save signed document to</param>
         /// <remarks>
         /// Biometric (FSS) signature data should ideally be saved as custom XMP metadata in the signature field
         /// but FreeSpire.PDF does not currently support this so an alternative (possibly paid-for) PDF library 
         /// would be required.
         /// </remarks>
-        private Stream SignWithSpire(Stream stream, int pageNum, string fieldName, string sigText, byte[] sigImageBytes, int SignatureDPI)
+        private void SignWithSpire(Stream stream, int pageNum, string fieldName, string sigText, byte[] sigImageBytes, int SignatureDPI, string documentPath)
         {
             Spire.Pdf.PdfDocument doc = new Spire.Pdf.PdfDocument(stream);
             Spire.Pdf.PdfPageBase page = doc.Pages[pageNum - 1];
 
             // Load certificate from resources
-            var cert = new Spire.Pdf.Security.PdfCertificate(@"Resources\WacomDemoSigningCert.pfx", "password");
+            var cert = new Spire.Pdf.Security.PdfCertificate(@"Resources\Wacom.Kiosk.IntegratorUI.p12", "password");
 
             // Find signature field widget
             var formWidget = doc.Form as Spire.Pdf.Widget.PdfFormWidget;
             var fieldWidget = formWidget.FieldsWidget[fieldName] as Spire.Pdf.Widget.PdfSignatureFieldWidget;
 
+            ConfigureSigImage(sigImageBytes, fieldWidget.Bounds.Size, SignatureDPI);
+
             // Create and initialize signature object
             var signature = new Spire.Pdf.Security.PdfSignature(doc, page, cert, fieldWidget.Name, fieldWidget)
             {
                 Certificated = true,
-                DocumentPermissions = Spire.Pdf.Security.PdfCertificationFlags.AllowFormFill,
+                DocumentPermissions = Spire.Pdf.Security.PdfCertificationFlags.ForbidChanges,
             };
 
             string url = "http://timestamp.wosign.com/rfc3161";
             signature.ConfigureTimestamp(url);
             signature.ConfigureCustomGraphics(DrawSigImage);
 
-            ConfigureSigImage(sigImageBytes, fieldWidget.Bounds.Size, SignatureDPI);
-
-            // Save (and thereby sign) the document to a stream 
-            MemoryStream outStream = new MemoryStream();
-            doc.SaveToStream(outStream);
-            outStream.Seek(0, SeekOrigin.Begin);
-            
-            return outStream;
+            doc.SaveToFile(documentPath);
         }
 
         /// <summary>
