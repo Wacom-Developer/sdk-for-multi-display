@@ -198,9 +198,18 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigureSignatureWindow for input of signature capture parameters</summary>
         private void OpenSignatureClick(object sender, RoutedEventArgs e)
         {
-            var signatureConfigurationWindow = new ConfigureSignatureWindow(selectedClient);
-            signatureConfigurationWindow.Activate();
-            signatureConfigurationWindow.Show();
+            ActiveClient activeClient = KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+
+            if (activeClient != null)
+            {
+                var signatureConfigurationWindow = new ConfigureSignatureWindow(activeClient.ClientAddress);
+                signatureConfigurationWindow.Activate();
+                signatureConfigurationWindow.Show(); 
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
         }
 
         /// <summary>Displays ConfigureDocumentWindow for input of document display paraters</summary>
@@ -218,7 +227,7 @@ namespace Wacom.Kiosk.IntegratorUI
             }
             else
             {
-                MessageBox.Show("No Client Connected Found");
+                MessageBox.Show("No Client Connected");
             }
         }
 

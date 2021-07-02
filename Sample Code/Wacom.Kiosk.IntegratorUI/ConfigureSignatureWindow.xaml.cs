@@ -23,12 +23,12 @@ namespace Wacom.Kiosk.IntegratorUI
     /// </summary>
     public partial class ConfigureSignatureWindow : Window
     {
-        private string clientName = "";
+        private string clientAddress = "";
 
         public ConfigureSignatureWindow(string client)
         {
             InitializeComponent();
-            clientName = client;
+            clientAddress = client;
         }
 
         private void button_filepicker_document_path_Click(object sender, RoutedEventArgs e)
@@ -118,10 +118,10 @@ namespace Wacom.Kiosk.IntegratorUI
                 var imgString = Convert.ToBase64String(bgImgBytes);
                 msg.WithBackgroundImage(imgString);
             }
-            if (clientName.Equals("Everyone"))
+            if (clientAddress.Equals("Everyone"))
                 KioskServer.Mq.BroadcastMessage(msg.Build().ToByteArray());
             else
-                KioskServer.Mq.SendMessage(clientName, msg.Build().ToByteArray());
+                KioskServer.Mq.SendMessage(clientAddress, msg.Build().ToByteArray());
 
             Close();
         }
