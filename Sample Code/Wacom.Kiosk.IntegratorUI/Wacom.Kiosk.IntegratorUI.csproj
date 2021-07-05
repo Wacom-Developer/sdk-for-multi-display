@@ -31,11 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\kiosk-mode-sdk\Wacom.Kiosk\Wacom.Kiosk.Pdf.Shared\JsonPdfSerializer.cs" Link="JsonPdfSerializer.cs" />
-    <Compile Include="..\..\..\kiosk-mode-sdk\Wacom.Kiosk\Wacom.Kiosk.Pdf\PdfHelper.cs" Link="PdfHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Resources\Definitions\DocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
