@@ -54,8 +54,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="Pdfium.Net.SDK" Version="4.20.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.7" />
+    <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.8" />
     <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
   </ItemGroup>
 

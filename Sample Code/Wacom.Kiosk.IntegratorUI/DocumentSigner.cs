@@ -56,7 +56,7 @@ namespace Wacom.Kiosk.IntegratorUI
                         }
 
                         var stream = new MemoryStream();
-                        document.Save(stream, SaveFlags.Incremental);
+                        document.Save(stream, SaveFlags.NoIncremental | SaveFlags.GenerateFreeEntries);
                         document.Dispose();
 
                         SignWithSpire(stream, page, fieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
