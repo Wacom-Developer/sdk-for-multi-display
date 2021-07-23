@@ -251,6 +251,29 @@ namespace Wacom.Kiosk.IntegratorUI
                 .ToByteArray());
         }
 
+        /// <summary>Initiates settng value (Content) of a named element</summary>
+        private void SetValueClick(object sender, RoutedEventArgs e)
+        {
+            string eltName = txtElementName.Text;
+            string eltValue = txtElementValue.Text;
+            SendMessage(new SetElementValueMessage(KioskServer.Sender)
+                .WithName(eltName)
+                .WithValue(eltValue)
+                .Build()
+                .ToByteArray());
+        }
+
+        private void ZoomSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (double.TryParse(((ComboBoxItem)cbxZoom.SelectedValue).Tag.ToString(), out double zoom))
+            {
+                SendMessage(new SetDocumentZoomMessage(KioskServer.Sender)
+                    .WithZoom(zoom)
+                    .Build()
+                    .ToByteArray());
+            }
+        }
+
         /// <summary>Displays ConfigureAppConfig for input of config file name</summary>
         private void UpdateConfigClick(object sender, RoutedEventArgs e)
         {
@@ -854,5 +877,6 @@ namespace Wacom.Kiosk.IntegratorUI
         }
 
         #endregion
+
     }
 }
