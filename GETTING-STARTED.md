@@ -51,6 +51,15 @@ However you can generate a new license at any time.
 
 # Sample Application
 
+## Download compatible sample code
+
+The application is under constant development and as a result incompatibility can occur between SDK versions.  
+Check the version of the installed SDK and choose the matching GitHub branch if one is available.  
+Otherwise more recent SDK versions will use the master branch.  
+For example, at the time of writing, the SDK version available for download is *v1.0.6*  
+Therefore download and use the Sample Code in the branch labelled *v1.0.6* in this repository.
+
+
 ## Install the Client Tray Application
 
 The Client Tray application is supplied in an msi installer in the SDK Client folder.
