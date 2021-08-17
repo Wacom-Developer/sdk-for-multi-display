@@ -65,10 +65,11 @@
                 <Label Grid.Column="0" Content="Zoom"/>
                 <ComboBox x:Name="cbxZoom" Grid.Column="1" SelectionChanged="ZoomSelectionChanged">
                     <ComboBoxItem Tag="0.25">25%</ComboBoxItem>
-                    <ComboBoxItem Tag="0.5">50%</ComboBoxItem>
+                    <ComboBoxItem Tag="0.50">50%</ComboBoxItem>
                     <ComboBoxItem Tag="0.75">75%</ComboBoxItem>
-                    <ComboBoxItem Tag="1.0" IsSelected="True">100%</ComboBoxItem>
+                    <ComboBoxItem Tag="1.00" IsSelected="True">100%</ComboBoxItem>
                     <ComboBoxItem Tag="1.25">125%</ComboBoxItem>
+                    <ComboBoxItem Tag="1.50">150%</ComboBoxItem>
                 </ComboBox>
             </Grid>
             <GroupBox Header="Element">

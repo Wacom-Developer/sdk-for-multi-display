@@ -30,6 +30,8 @@ namespace Wacom.Kiosk.IntegratorUI
         private string ClientIpAddress = "";
         private ILogger logger;
 
+        public int PageCount { get; private set; }
+
         public ConfigureDocumentWindow(string client, string clientIpAddress, ILogger logger)
         {
             InitializeComponent();
@@ -91,6 +93,8 @@ namespace Wacom.Kiosk.IntegratorUI
                 using var docViewFileStream = File.OpenText(definitionFilePath);
                 var docViewDefinitionString = docViewFileStream.ReadToEnd();
                 var thumbsStr = pdfHelper.GetThumbnails(thumbnailsFrom, thumbnailsTo);
+
+                PageCount = pdfHelper.DocumentPagesCount;
 
                 return new OpenDocumentPageMessage(KioskServer.Sender)
                                 .WithDefinition(docViewDefinitionString)

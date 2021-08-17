@@ -20,6 +20,7 @@
     <Page Remove="Resources\Definitions\DocumentViewSuperImposedButtons.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewTopBottomPanels.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewTopPanel.xaml" />
+    <Page Remove="Resources\Definitions\MessageBox.xaml" />
     <Page Remove="Resources\Definitions\SignatureView.xaml" />
     <Page Remove="Resources\Definitions\SignatureViewWholeScreen.xaml" />
     <Page Remove="Resources\DocumentView.xaml" />
@@ -31,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Resources\Definitions\DocumentView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Include="Resources\Definitions\SignProDocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -55,12 +60,19 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.9" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.0" />
     <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Integrator.Logger.Serilog\Integrator.Logger.Serilogger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Definitions\MessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -181,6 +193,9 @@
     <None Update="Resources\Documents\Test3.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Documents\ThumbnailTest.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Documents\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -254,6 +269,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\it_keyboard_layout.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\PdfiumLicense.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\PdfWithAcroFields.pdf">

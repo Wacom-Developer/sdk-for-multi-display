@@ -69,6 +69,13 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>XAML definition for simple signature capture screen</summary>
         private const string defaultSignatureDefinition = @"<Window xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""     xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""     xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""     xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""     xmlns:local=""clr-namespace:Wacom.Kiosk.App"" mc:Ignorable=""d"" x:Name=""DocumentView"" Title=""DocumentView"" WindowStyle=""None"" Width=""1920"" Height=""1080"">    <Grid>        <Grid Name=""SignatureContainer""></Grid>        <Grid Panel.ZIndex=""2"" HorizontalAlignment=""Right"" Width=""150"" Background=""Transparent"">            <StackPanel Panel.ZIndex=""2"" Orientation=""Vertical"">                <Button x:Name=""AcceptSignature"" Content=""AcceptSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""CancelSignature"" Content=""CancelSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""ClearSignature"" Content=""ClearSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>            </StackPanel>        </Grid>    </Grid></Window>";
 
+        private ActiveClient ActiveClient {
+            get
+            {
+                return KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+            }
+        }
+
         #endregion
 
         #region Construction
@@ -89,16 +96,27 @@ namespace Wacom.Kiosk.IntegratorUI
             KioskServer.Mq.OnClientConnected += OnClientConnected;
             KioskServer.Mq.OnClientDisconnected += OnClientDisconnected;
             KioskServer.Mq.OnSubscriberMessageReceived += OnMessageReceived;
+
+            string licenseFile = @"Resources\PdfiumLicense.txt";
+            if (File.Exists(licenseFile))
+            {
+                using var pdfiumLicenseStream = File.OpenText(licenseFile);
+                var pdfiumLicense = pdfiumLicenseStream.ReadToEnd();
+                if (!string.IsNullOrEmpty(pdfiumLicense))
+                {
+                    PdfCommon.Initialize(pdfiumLicense);  
+                }
+            }
         }
 
-        #endregion        
-        
+        #endregion
+
         #region SDK Event Handlers
         private void OnClientDisconnected(object sender, string clientName)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                cbxClients.Items.Remove(KioskServer.Mq.ActiveClients.Where(el => el.Name.Equals(clientName)).FirstOrDefault()?.Name);
+                cbxClients.Items.Remove(ActiveClient?.Name);
             });
         }
 
@@ -198,13 +216,13 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigureSignatureWindow for input of signature capture parameters</summary>
         private void OpenSignatureClick(object sender, RoutedEventArgs e)
         {
-            ActiveClient activeClient = KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+            ActiveClient activeClient = ActiveClient;
 
             if (activeClient != null)
             {
                 var signatureConfigurationWindow = new ConfigureSignatureWindow(activeClient.ClientAddress);
                 signatureConfigurationWindow.Activate();
-                signatureConfigurationWindow.Show(); 
+                signatureConfigurationWindow.Show();
             }
             else
             {
@@ -215,7 +233,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigureDocumentWindow for input of document display paraters</summary>
         private void OpenDocClick(object sender, RoutedEventArgs e)
         {
-            ActiveClient activeClient = KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+            ActiveClient activeClient = ActiveClient;
             if (activeClient != null)
             {
                 ConfigureDocumentWindow documentConfigurationWindow = new ConfigureDocumentWindow(activeClient.Name, activeClient.ClientAddress, logger);
@@ -223,6 +241,8 @@ namespace Wacom.Kiosk.IntegratorUI
                 if ((bool)documentConfigurationWindow.ShowDialog())
                 {
                     InputValues.Clear();
+                    var comboBoxItem = cbxZoom.Items.OfType<ComboBoxItem>().FirstOrDefault(x => x.Content.ToString() == "100%");
+                    cbxZoom.SelectedIndex = cbxZoom.Items.IndexOf(comboBoxItem);
                 }
             }
             else
@@ -242,35 +262,44 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Initiates enabling/disabling a named element</summary>
         private void SetStateClick(object sender, RoutedEventArgs e)
         {
-            string elName = txtElementName.Text;
-            bool isEnabled = chkIsEnabled.IsChecked ?? false;
-            SendMessage(new SetElementEnabledMessage(KioskServer.Sender)
-                .WithName(elName)
-                .WithState(isEnabled)
-                .Build()
-                .ToByteArray());
+            if (ActiveClient != null)
+            {
+                string elName = txtElementName.Text;
+                bool isEnabled = chkIsEnabled.IsChecked ?? false;
+                SendMessage(new SetElementEnabledMessage(KioskServer.Sender)
+                    .WithName(elName)
+                    .WithState(isEnabled)
+                    .Build()
+                    .ToByteArray()); 
+            }
         }
 
         /// <summary>Initiates settng value (Content) of a named element</summary>
         private void SetValueClick(object sender, RoutedEventArgs e)
         {
-            string eltName = txtElementName.Text;
-            string eltValue = txtElementValue.Text;
-            SendMessage(new SetElementValueMessage(KioskServer.Sender)
-                .WithName(eltName)
-                .WithValue(eltValue)
-                .Build()
-                .ToByteArray());
+            if (ActiveClient != null)
+            {
+                string eltName = txtElementName.Text;
+                string eltValue = txtElementValue.Text;
+                SendMessage(new SetElementValueMessage(KioskServer.Sender)
+                    .WithName(eltName)
+                    .WithValue(eltValue)
+                    .Build()
+                    .ToByteArray()); 
+            }
         }
 
         private void ZoomSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (double.TryParse(((ComboBoxItem)cbxZoom.SelectedValue).Tag.ToString(), out double zoom))
+            if (ActiveClient != null)
             {
-                SendMessage(new SetDocumentZoomMessage(KioskServer.Sender)
-                    .WithZoom(zoom)
-                    .Build()
-                    .ToByteArray());
+                if (double.TryParse(((ComboBoxItem)cbxZoom.SelectedValue).Tag.ToString(), out double zoom))
+                {
+                    SendMessage(new SetDocumentZoomMessage(KioskServer.Sender)
+                        .WithZoom(zoom)
+                        .Build()
+                        .ToByteArray());
+                } 
             }
         }
 
@@ -285,7 +314,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Initiates toggling of Mirroring</summary>
         private void MirrorClick(object sender, RoutedEventArgs e)
         {
-            ActiveClient activeClient = KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+            ActiveClient activeClient = ActiveClient;
             if (activeClient != null)
             {
                 if (!bMirroring)
@@ -531,6 +560,14 @@ namespace Wacom.Kiosk.IntegratorUI
                     break;
 
                 case "DocumentRejected":
+                    RejectDocument();
+                    break;
+
+                case "MessageBox_Cancel":
+                    SendMessage(new DismissDialogMessage(KioskServer.Sender).Build().ToByteArray());
+                    break;
+
+                case "MessageBox_Dismiss":
                     SendMessage(new OpenIdleMessage(KioskServer.Sender).Build().ToByteArray());
                     break;
             }
@@ -685,6 +722,15 @@ namespace Wacom.Kiosk.IntegratorUI
             SendMessage(new GetPageDataMessage(KioskServer.Sender).Build().ToByteArray());
         }
 
+        private void RejectDocument()
+        {
+            using var xamlStream = File.OpenText(@"Resources\Definitions\MessageBox.xaml");
+            var xaml = xamlStream.ReadToEnd();
+
+            SendMessage(new ShowDialogMessage(KioskServer.Sender).WithXAML(xaml).Build().ToByteArray());
+        }
+
+
         /// <summary>
         /// Restores previously stored field values
         /// </summary>
@@ -821,7 +867,6 @@ namespace Wacom.Kiosk.IntegratorUI
                                 .ForDocumentPage(page)
                                 .Build()
                                 .ToByteArray());
-            Debug.WriteLine("PdfHelper going out of scope");
         }
 
         /// <summary>
