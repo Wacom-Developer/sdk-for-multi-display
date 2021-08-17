@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Documents\ThumbnailTest.pdf" />
     <None Remove="Resources\TabletTrayIcon.ico" />
   </ItemGroup>
 
@@ -35,9 +36,6 @@
     <None Include="Resources\Definitions\DocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="Resources\Definitions\SignProDocumentView.xaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Definitions\DocumentViewLeftRight.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -191,9 +189,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Documents\Test3.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Documents\ThumbnailTest.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Documents\WacomKiosk.pdf">
