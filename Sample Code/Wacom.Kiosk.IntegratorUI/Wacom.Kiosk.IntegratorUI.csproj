@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Documents\ThumbnailTest.pdf" />
+    <None Remove="Resources\Fonts\Averta-Bold.ttf" />
+    <None Remove="Resources\Fonts\Averta-Light.ttf" />
+    <None Remove="Resources\Fonts\Averta-Regular.ttf" />
     <None Remove="Resources\TabletTrayIcon.ico" />
   </ItemGroup>
 
@@ -24,6 +26,7 @@
     <Page Remove="Resources\Definitions\MessageBox.xaml" />
     <Page Remove="Resources\Definitions\SignatureView.xaml" />
     <Page Remove="Resources\Definitions\SignatureViewWholeScreen.xaml" />
+    <Page Remove="Resources\Definitions\SignProDocumentView.xaml" />
     <Page Remove="Resources\DocumentView.xaml" />
     <Page Remove="Resources\DocumentView2.xaml" />
     <Page Remove="Resources\MainWindow.xaml" />
@@ -50,6 +53,9 @@
     <None Include="Resources\Definitions\SignatureViewWholeScreen.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Definitions\SignProDocumentView.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -58,7 +64,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.0" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.1" />
     <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
   </ItemGroup>
 
@@ -191,6 +197,9 @@
     <None Update="Resources\Documents\Test3.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Documents\ThumbnailTest.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Documents\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -305,6 +314,12 @@
     <None Update="Resources\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\Averta-Bold.ttf" />
+    <Resource Include="Resources\Fonts\Averta-Light.ttf" />
+    <Resource Include="Resources\Fonts\Averta-Regular.ttf" />
   </ItemGroup>
 
 </Project>

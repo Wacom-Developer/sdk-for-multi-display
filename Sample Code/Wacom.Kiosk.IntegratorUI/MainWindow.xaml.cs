@@ -56,6 +56,8 @@ namespace Wacom.Kiosk.IntegratorUI
         private bool bMirroring = false;
         private bool bPrivacy = false;
 
+        private int PageCount = 0;
+
         /// <summary>Saved field values for each page of current document</summary>
         private readonly Dictionary<int, Dictionary<string, object>> InputValues = new Dictionary<int, Dictionary<string, object>>();
 
@@ -243,6 +245,7 @@ namespace Wacom.Kiosk.IntegratorUI
                     InputValues.Clear();
                     var comboBoxItem = cbxZoom.Items.OfType<ComboBoxItem>().FirstOrDefault(x => x.Content.ToString() == "100%");
                     cbxZoom.SelectedIndex = cbxZoom.Items.IndexOf(comboBoxItem);
+                    PageCount = documentConfigurationWindow.PageCount;
                 }
             }
             else
@@ -521,7 +524,7 @@ namespace Wacom.Kiosk.IntegratorUI
             ActiveClient activeClient = KioskServer.GetActiveClient(msg.Sender.Name);
             if (activeClient.DocumentContext.DocumentPageNumber == msg.PageNumber)
             {
-                // Thumbnail is current page - do notihng
+                // Thumbnail is current page - do nothing
                 return;
             }
 
@@ -783,7 +786,8 @@ namespace Wacom.Kiosk.IntegratorUI
                 ? activeClient.DocumentContext.DocumentPageNumber + 1
                 : activeClient.DocumentContext.DocumentPageNumber - 1;
 
-            if (pageToParse < 1) return;
+            if (pageToParse < 1 || pageToParse > PageCount) 
+                return;
 
             ChangeDocumentPage(activeClient, pageToParse);
         }
@@ -925,3 +929,4 @@ namespace Wacom.Kiosk.IntegratorUI
 
     }
 }
+                    
