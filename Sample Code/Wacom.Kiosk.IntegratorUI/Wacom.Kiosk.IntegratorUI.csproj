@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Fonts\Averta-Bold.ttf" />
-    <None Remove="Resources\Fonts\Averta-Light.ttf" />
-    <None Remove="Resources\Fonts\Averta-Regular.ttf" />
+    <Compile Remove="Resources\Fonts\**" />
+    <EmbeddedResource Remove="Resources\Fonts\**" />
+    <None Remove="Resources\Fonts\**" />
+    <Page Remove="Resources\Fonts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\TabletTrayIcon.ico" />
   </ItemGroup>
 
@@ -53,9 +57,6 @@
     <None Include="Resources\Definitions\SignatureViewWholeScreen.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Definitions\SignProDocumentView.xaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +65,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.2" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.3" />
     <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
   </ItemGroup>
 
@@ -314,12 +315,6 @@
     <None Update="Resources\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Fonts\Averta-Bold.ttf" />
-    <Resource Include="Resources\Fonts\Averta-Light.ttf" />
-    <Resource Include="Resources\Fonts\Averta-Regular.ttf" />
   </ItemGroup>
 
 </Project>
