@@ -261,7 +261,7 @@ If the sample code fails to build related to NuGet packages, note that the cache
 Reset the driver pen settings as follows:
 ```
 Run:
-C:\Program Files\Tablet\Wacom\32\PrefUtil.exe  
+C:\Program Files\Tablet\Wacom\PrefUtil.exe  
 Click: 
 All User Preferences ... [ Remove ]
 ```
