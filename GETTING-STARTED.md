@@ -19,7 +19,7 @@ Scroll the Settings page to the Multiple displays section then select Extend:
 
 
 
-## Download the Wacom Ink SDK for documents
+## Download the Wacom Ink SDK for multi-display
 
 Download the SDK from https://developer.wacom.com/developer-dashboard
 
