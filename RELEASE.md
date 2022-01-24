@@ -1,8 +1,18 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.0.6
+## Version 1.0.9
 
 ## History
+
+  1.0.9 15 July 2021
+    - Bug fixes 
+    - Client v1.0.9
+    - Nuget v1.0.9
+    
+  1.0.8 06 July 2021
+    * Bug fixes
+    * Client v1.0.8
+    * Nuget v1.0.8
 
 ### 1.0.6   29 March 2021
   * Bug fixes
