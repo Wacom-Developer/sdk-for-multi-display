@@ -142,8 +142,11 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Handles message received from client</summary>
         private void OnMessageReceived(object sender, byte[] messageBytes)
         {
-            object msg = KioskMessageFactory.FromByteArray(messageBytes);
-            MessageHandlers.HandleMessage(msg);
+            if (messageBytes != null)
+            {
+                object msg = KioskMessageFactory.FromByteArray(messageBytes);
+                MessageHandlers.HandleMessage(msg); 
+            }
         }
 
         #endregion
@@ -181,6 +184,29 @@ namespace Wacom.Kiosk.IntegratorUI
                                 .ToByteArray());
         }
 
+        
+        private void ShowDialogClick(object sender, RoutedEventArgs e)
+        {
+            ConfigureDialogWindow dlgConfigurationWindow = new ConfigureDialogWindow();
+
+            if ((bool)dlgConfigurationWindow.ShowDialog() && !string.IsNullOrEmpty(dlgConfigurationWindow.Filename))
+            {
+                using var xamlStream = File.OpenText(dlgConfigurationWindow.Filename);
+                var xaml = xamlStream.ReadToEnd();
+
+                SendMessage(new ShowDialogMessage(KioskServer.Sender)
+                                .WithXAML(xaml)
+                                .Build()
+                                .ToByteArray());
+            }
+            else
+            {
+                SendMessage(new DismissDialogMessage(KioskServer.Sender)
+                                .Build()
+                                .ToByteArray());
+            }
+        }
+
         /// <summary>Initiates display of a web page</summary>
         private void OpenWebClick(object sender, RoutedEventArgs e)
         {
@@ -194,25 +220,46 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigurePdfWindow for input of PDF to display</summary>
         private void OpenPdfClick(object sender, RoutedEventArgs e)
         {
-            ConfigurePdfWindow pdfConfigurationWindow = new ConfigurePdfWindow(selectedClient);
-            pdfConfigurationWindow.Activate();
-            pdfConfigurationWindow.Show();
+            if (ActiveClient != null)
+            {
+                ConfigurePdfWindow pdfConfigurationWindow = new ConfigurePdfWindow(selectedClient);
+                pdfConfigurationWindow.Activate();
+                pdfConfigurationWindow.Show(); 
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
         }
 
         /// <summary>Displays ConfigureIdleWindow for input of update parameters</summary>
         private void UpdateMediaClick(object sender, RoutedEventArgs e)
         {
-            ConfigureIdleWindow idleConfigWindow = new ConfigureIdleWindow(selectedClient);
-            idleConfigWindow.Activate();
-            idleConfigWindow.Show();
+            if (ActiveClient != null)
+            {
+                ConfigureIdleWindow idleConfigWindow = new ConfigureIdleWindow(selectedClient);
+                idleConfigWindow.Activate();
+                idleConfigWindow.Show(); 
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
         }
 
         /// <summary>Displays ConfigureThumbnailsWindow for input of parameters</summary>
         private void UpdateThumbnailsClick(object sender, RoutedEventArgs e)
         {
-            ConfigureThumbnailsWindow thumbnailsConfigurationWindow = new ConfigureThumbnailsWindow(selectedClient, logger);
-            thumbnailsConfigurationWindow.Activate();
-            thumbnailsConfigurationWindow.Show();
+            if (ActiveClient != null)
+            {
+                ConfigureThumbnailsWindow thumbnailsConfigurationWindow = new ConfigureThumbnailsWindow(selectedClient, logger);
+                thumbnailsConfigurationWindow.Activate();
+                thumbnailsConfigurationWindow.Show(); 
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
         }
 
         /// <summary>Displays ConfigureSignatureWindow for input of signature capture parameters</summary>
@@ -239,7 +286,7 @@ namespace Wacom.Kiosk.IntegratorUI
             if (activeClient != null)
             {
                 ConfigureDocumentWindow documentConfigurationWindow = new ConfigureDocumentWindow(activeClient.Name, activeClient.ClientAddress, logger);
-                documentConfigurationWindow.Activate();
+                
                 if ((bool)documentConfigurationWindow.ShowDialog())
                 {
                     InputValues.Clear();
@@ -336,21 +383,24 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Initiates toggling of Privacy Mode</summary>
         private void PrivacyClick(object sender, RoutedEventArgs e)
         {
-            SetMirroringScreenBlackMessage mirroringBlack = new SetMirroringScreenBlackMessage(KioskServer.Sender);
-
-            if (!bPrivacy)
+            if (ActiveClient != null)
             {
-                mirroringBlack.IsActive(true);
-                bPrivacy = true;
-                // miss hide on sdk
-            }
-            else
-            {
-                mirroringBlack.IsActive(false);
-                bPrivacy = false;
-            }
+                SetMirroringScreenBlackMessage mirroringBlack = new SetMirroringScreenBlackMessage(KioskServer.Sender);
 
-            SendMessage(mirroringBlack.Build().ToByteArray());
+                if (!bPrivacy)
+                {
+                    mirroringBlack.IsActive(true);
+                    bPrivacy = true;
+                    // miss hide on sdk
+                }
+                else
+                {
+                    mirroringBlack.IsActive(false);
+                    bPrivacy = false;
+                }
+
+                SendMessage(mirroringBlack.Build().ToByteArray()); 
+            }
         }
 
         #endregion
@@ -386,6 +436,10 @@ namespace Wacom.Kiosk.IntegratorUI
 
             MessageHandlers.RegisterHandler(new MessageHandler<InitializeConnectionMessage>((msg) =>
             {
+                // Initial connection or could be kiosk restarted, either way 
+                // assume mirroring and privacy are therefore both off
+                bMirroring = false;
+                bPrivacy = false;
                 AppendLog(msg.ToString());
             }), logger);
 
@@ -517,6 +571,7 @@ namespace Wacom.Kiosk.IntegratorUI
 
         /// <summary>
         /// Respond to click on thumbnail
+        /// Respond to click on thumbnail
         /// </summary>
         /// <param name="msg"></param>
         private void HandleThumbnailClicked(ThumbnailClickedMessage msg)
@@ -584,18 +639,38 @@ namespace Wacom.Kiosk.IntegratorUI
         {
             ActiveClient activeClient = KioskServer.GetActiveClient(msg.Sender.Name);
 
-            // Check if field has been signed
-            var sig = DocumentSigner.GetSignatureInfo(activeClient.DocumentContext.DocumentPath, msg.SignatureFieldName);
-            if (string.IsNullOrEmpty(sig))
+            try
             {
-                StartSignatureCapture(msg, activeClient);
-            }
-            else
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                AppendLog($"{msg.SignatureFieldName} clicked");
+                var document = PdfDocument.Load(activeClient.DocumentContext.DocumentPath);
+
+                if (document.Pages.Count <= 10)
                 {
-                    MessageBox.Show(sig, "Signature", MessageBoxButton.OK, MessageBoxImage.Information);
-                });
+                    var sig = DocumentSigner.GetSignatureInfo(activeClient.DocumentContext.DocumentPath, msg.SignatureFieldName);
+
+                    // Check if field has been signed
+                    if (string.IsNullOrEmpty(sig))
+                    {
+                        StartSignatureCapture(msg, document, activeClient);
+                    }
+                    else
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show(sig, "Signature", MessageBoxButton.OK, MessageBoxImage.Information);
+                        });
+                    }
+
+                }            
+                else
+                {
+                    MessageBox.Show($"PDF library used for signatures doesn't handle documents with more than 10 pages");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception: {ex}");
+                throw;
             }
         }
 
@@ -603,7 +678,7 @@ namespace Wacom.Kiosk.IntegratorUI
 
         #region PDF Document Support
 
-        private void StartSignatureCapture(SignatureClickedMessage msg, ActiveClient activeClient)
+        private void StartSignatureCapture(SignatureClickedMessage msg, PdfDocument document, ActiveClient activeClient)
         {
             SignatureFieldName = msg.SignatureFieldName;
             // Register new handler to save PDF, when we've received field data
@@ -615,9 +690,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 // Save field values from current page
                 InputValues[activeClient.DocumentContext.DocumentPageNumber] = msg.PageData;
 
-                var forms = new PdfForms();
-                using var document = PdfDocument.Load(activeClient.DocumentContext.DocumentPath, forms);
-                var fieldRect = forms.InterForm.Fields.Find(fld => fld.FullName == SignatureFieldName).Controls[0].BoundRect;
+                //var fieldRect = forms.InterForm.Fields.Find(fld => fld.FullName == SignatureFieldName).Controls[0].BoundRect;
 
                 // Open Signature page
                 SignatureConfig signatureConfig = new SignatureConfig()

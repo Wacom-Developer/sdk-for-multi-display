@@ -44,6 +44,7 @@
             <ComboBox x:Name="cbxIdleMode" VerticalAlignment="Top"/>
             <TextBox x:Name="IdleCustDef" Text="default" TextWrapping="Wrap" Height="Auto" HorizontalAlignment="Stretch"/>
             <Button x:Name="btnIdleMode" Content="Open Idle" Click="IdleModeClick"/>
+            <Button x:Name="btnShowDlg" Content="Show Dialog" Click="ShowDialogClick"/>
             <Button x:Name="btnUpdateMedia" Content="Update Media Files" Click="UpdateMediaClick"/>
             <Button x:Name="btnOpenSignature" Content="Open Signature" Click="OpenSignatureClick"/>
             <Button Content="Update app config" Name="btnUpdateConfig" Click="UpdateConfigClick"/>

@@ -28,8 +28,8 @@
             <Button.Background>
                 <ImageBrush ImageSource="zoomin.png"/>
             </Button.Background>
-        </Button>
-        <Button x:Name="SignStepping" Grid.Row="0" Grid.Column="2"  BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Top">
+        </Button>       
+        <Button x:Name="ForwardsBtn" Grid.Row="0" Grid.Column="2"  BorderThickness="0" HorizontalAlignment="Center" Width="75" Height="75" VerticalAlignment="Top">
             <Button.Background>
                 <ImageBrush ImageSource="forwards.png"/>
             </Button.Background>

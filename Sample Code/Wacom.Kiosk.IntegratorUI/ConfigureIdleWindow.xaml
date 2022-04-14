@@ -18,6 +18,6 @@
         <TextBox x:Name="text_box_media_group" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" Text="default" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20"/>
         <ComboBox x:Name="combobox_update_type" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top"/>
         <Button x:Name="button_filepicker_media" Content="Browse..." Grid.Column="3" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_media_Click"/>
-        <Button x:Name="button_update" Grid.Column="4" Margin="0,10,0,0" VerticalAlignment="Top" Content="Update" HorizontalAlignment="Center" Height="20" Click="button_update_Click"/>
+        <Button x:Name="button_update" Grid.Column="4" Margin="0,10,0,0" VerticalAlignment="Top" Content="Update" HorizontalAlignment="Center" Height="20" Click="button_update_Click" IsEnabled="false"/>
     </Grid>
 </Window>

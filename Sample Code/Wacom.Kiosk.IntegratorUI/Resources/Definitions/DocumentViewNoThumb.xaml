@@ -39,7 +39,7 @@
                     <RowDefinition Height="30*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="SignStepping" Grid.Row="0" BorderThickness="1" HorizontalAlignment="Center" Width="100" Height="100" VerticalAlignment="Top">
+                <Button x:Name="ForwardsBtn" Grid.Row="0" BorderThickness="1" HorizontalAlignment="Center" Width="100" Height="100" VerticalAlignment="Top">
                     <Button.Background>
                         <ImageBrush ImageSource="forwards.png"/>
                     </Button.Background>
