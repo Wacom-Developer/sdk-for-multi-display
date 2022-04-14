@@ -5,8 +5,15 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.0.6</Version>
+    <Version>1.1.6</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\Fonts\**" />
+    <EmbeddedResource Remove="Resources\Fonts\**" />
+    <None Remove="Resources\Fonts\**" />
+    <Page Remove="Resources\Fonts\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resources\TabletTrayIcon.ico" />
@@ -20,8 +27,11 @@
     <Page Remove="Resources\Definitions\DocumentViewSuperImposedButtons.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewTopBottomPanels.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewTopPanel.xaml" />
+    <Page Remove="Resources\Definitions\MessageBox.xaml" />
+    <Page Remove="Resources\Definitions\MessageBoxCtl.xaml" />
     <Page Remove="Resources\Definitions\SignatureView.xaml" />
     <Page Remove="Resources\Definitions\SignatureViewWholeScreen.xaml" />
+    <Page Remove="Resources\Definitions\SignProDocumentView.xaml" />
     <Page Remove="Resources\DocumentView.xaml" />
     <Page Remove="Resources\DocumentView2.xaml" />
     <Page Remove="Resources\MainWindow.xaml" />
@@ -31,8 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Resources\Definitions\MessageBoxCtl.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Resources\Definitions\DocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
     </None>
     <None Include="Resources\Definitions\DocumentViewLeftRight.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -47,6 +64,10 @@
     <None Include="Resources\Definitions\SignatureViewWholeScreen.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Definitions\SignProDocumentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -55,12 +76,19 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.0.9" />
-    <PackageReference Include="WatsonTcp" Version="4.3.0.3" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.6" />
+    <PackageReference Include="WatsonTcp" Version="4.8.14.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Integrator.Logger.Serilog\Integrator.Logger.Serilogger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Definitions\MessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -181,6 +209,9 @@
     <None Update="Resources\Documents\Test3.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Documents\ThumbnailTest.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Documents\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -292,6 +323,12 @@
     <None Update="Resources\WacomKiosk.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ConfigureDialogWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
 </Project>

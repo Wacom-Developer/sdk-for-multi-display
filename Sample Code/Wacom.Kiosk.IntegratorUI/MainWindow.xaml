@@ -25,9 +25,9 @@
     </Window.Resources>
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.15*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="0.15*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -44,6 +44,7 @@
             <ComboBox x:Name="cbxIdleMode" VerticalAlignment="Top"/>
             <TextBox x:Name="IdleCustDef" Text="default" TextWrapping="Wrap" Height="Auto" HorizontalAlignment="Stretch"/>
             <Button x:Name="btnIdleMode" Content="Open Idle" Click="IdleModeClick"/>
+            <Button x:Name="btnShowDlg" Content="Show Dialog" Click="ShowDialogClick"/>
             <Button x:Name="btnUpdateMedia" Content="Update Media Files" Click="UpdateMediaClick"/>
             <Button x:Name="btnOpenSignature" Content="Open Signature" Click="OpenSignatureClick"/>
             <Button Content="Update app config" Name="btnUpdateConfig" Click="UpdateConfigClick"/>
@@ -57,9 +58,46 @@
 
         <StackPanel Grid.Column="2" Orientation="Vertical">
             <Button x:Name="btnUpdateThumbnails" Content="Thumbnails" Click="UpdateThumbnailsClick"/>
-            <Button x:Name="btnSetState" Content="Change state" Click="SetStateClick"/>
-            <TextBox  x:Name="txtElementName" HorizontalAlignment="Left" Text="Element name" TextWrapping="Wrap" Width="120"/>
-            <CheckBox x:Name="chkIsEnabled" Content="Is Enabled" HorizontalAlignment="Left" />
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Zoom"/>
+                <ComboBox x:Name="cbxZoom" Grid.Column="1" SelectionChanged="ZoomSelectionChanged">
+                    <ComboBoxItem Tag="0.25">25%</ComboBoxItem>
+                    <ComboBoxItem Tag="0.50">50%</ComboBoxItem>
+                    <ComboBoxItem Tag="0.75">75%</ComboBoxItem>
+                    <ComboBoxItem Tag="1.00" IsSelected="True">100%</ComboBoxItem>
+                    <ComboBoxItem Tag="1.25">125%</ComboBoxItem>
+                    <ComboBoxItem Tag="1.50">150%</ComboBoxItem>
+                </ComboBox>
+            </Grid>
+            <GroupBox Header="Element">
+                <StackPanel Orientation="Vertical">
+                    <TextBox  x:Name="txtElementName" HorizontalAlignment="Stretch" Text="Element name" TextWrapping="Wrap" />
+
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox x:Name="chkIsEnabled" Grid.Row="0" Grid.Column="0" Content="Enabled" HorizontalAlignment="Left" />
+                        <Button x:Name="btnSetState" Grid.Row="0" Grid.Column="1" Content="Set state" Click="SetStateClick"/>
+
+                        <TextBox x:Name="txtElementValue" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Text="" TextWrapping="Wrap" />
+                        <Button x:Name="btnSetValue" Grid.Row="1" Grid.Column="1" Content="Set value" Click="SetValueClick" />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            
+            
         </StackPanel>
     </Grid>
 </Window>
