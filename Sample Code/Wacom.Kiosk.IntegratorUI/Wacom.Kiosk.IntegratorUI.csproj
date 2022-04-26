@@ -28,7 +28,6 @@
     <Page Remove="Resources\Definitions\DocumentViewTopBottomPanels.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewTopPanel.xaml" />
     <Page Remove="Resources\Definitions\MessageBox.xaml" />
-    <Page Remove="Resources\Definitions\MessageBoxCtl.xaml" />
     <Page Remove="Resources\Definitions\SignatureView.xaml" />
     <Page Remove="Resources\Definitions\SignatureViewWholeScreen.xaml" />
     <Page Remove="Resources\Definitions\SignProDocumentView.xaml" />
@@ -38,12 +37,6 @@
     <Page Remove="Resources\OtherWindow.xaml" />
     <Page Remove="Resources\OtherWindow2.operator.xaml" />
     <Page Remove="Resources\SignatureView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Definitions\MessageBoxCtl.xaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
