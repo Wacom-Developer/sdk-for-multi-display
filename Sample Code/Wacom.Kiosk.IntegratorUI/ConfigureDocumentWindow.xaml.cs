@@ -50,6 +50,7 @@ namespace Wacom.Kiosk.IntegratorUI
             int.TryParse(textbox_page_index.Text, out int pageNumber);
             int.TryParse(textbox_thumbnails_from.Text, out int thumbnailsFrom);
             int.TryParse(textbox_thumbnails_to.Text, out int thumbnailsTo);
+            string acroFieldName = textbox_acrofield_name.Text;
 
             KioskServer.Mq.UpdateClientContext(clientName, pageNumber, documentPath);
 
@@ -58,7 +59,8 @@ namespace Wacom.Kiosk.IntegratorUI
                             documentDefinitionPath,
                             pageNumber,
                             thumbnailsFrom,
-                            thumbnailsTo);
+                            thumbnailsTo,
+                            acroFieldName);
 
             if (msg == null)
             {
@@ -83,7 +85,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="thumbnailsFrom">The thumbnails from.</param>
         /// <param name="thumbnailsTo">The thumbnails to.</param>
         /// <returns></returns>
-        private KioskMessage<OpenDocumentPageMessage> GenerateOpenDocumentMessage(string filePath, string definitionFilePath, int pageToParse, int thumbnailsFrom, int thumbnailsTo)
+        private KioskMessage<OpenDocumentPageMessage> GenerateOpenDocumentMessage(string filePath, string definitionFilePath, int pageToParse, int thumbnailsFrom, int thumbnailsTo, string acroFieldName)
         {
             try
             {
@@ -100,6 +102,7 @@ namespace Wacom.Kiosk.IntegratorUI
                                 .WithDefinition(docViewDefinitionString)
                                 .WithThumbnails(thumbsStr, thumbnailsTo - thumbnailsFrom + 1)
                                 .ForDocumentPage(page, pdfHelper.DocumentPagesCount)
+                                .AtSelectedAcroField(acroFieldName)
                                 .Build();
             }
             catch (Exception ex)

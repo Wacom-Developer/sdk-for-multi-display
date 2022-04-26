@@ -324,7 +324,7 @@ namespace Wacom.Kiosk.IntegratorUI
             }
         }
 
-        /// <summary>Initiates settng value (Content) of a named element</summary>
+        /// <summary>Initiates setting value (Content) of a named element</summary>
         private void SetValueClick(object sender, RoutedEventArgs e)
         {
             if (ActiveClient != null)
@@ -336,6 +336,19 @@ namespace Wacom.Kiosk.IntegratorUI
                     .WithValue(eltValue)
                     .Build()
                     .ToByteArray()); 
+            }
+        }
+
+        /// <summary>Scrolls to and selects a named element</summary>
+        private void GoToField_Click(object sender, RoutedEventArgs e)
+        {
+            if (ActiveClient != null)
+            {
+                string fieldName = txtFieldName.Text;
+                SendMessage(new SelectAcroFieldMessage(KioskServer.Sender)
+                    .WithAcroFieldName(fieldName)
+                    .Build()
+                    .ToByteArray());
             }
         }
 

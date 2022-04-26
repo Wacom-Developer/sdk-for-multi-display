@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.1.6</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -64,10 +64,6 @@
     <None Include="Resources\Definitions\SignatureViewWholeScreen.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Definitions\SignProDocumentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -76,8 +72,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Pdfium.Net.SDK" Version="4.50.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.1.6" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.2.0" />
     <PackageReference Include="WatsonTcp" Version="4.8.14.10" />
+    <PackageReference Include="XmpCore" Version="6.1.10.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,7 +84,7 @@
   <ItemGroup>
     <None Include="Resources\Definitions\MessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -285,6 +282,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\it_keyboard_layout.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\PdfiumLicense.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\PdfWithAcroFields.pdf">

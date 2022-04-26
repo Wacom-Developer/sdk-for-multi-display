@@ -83,6 +83,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
@@ -93,11 +94,19 @@
 
                         <TextBox x:Name="txtElementValue" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Text="" TextWrapping="Wrap" />
                         <Button x:Name="btnSetValue" Grid.Row="1" Grid.Column="1" Content="Set value" Click="SetValueClick" />
+
                     </Grid>
                 </StackPanel>
             </GroupBox>
-            
-            
+
+            <GroupBox Header="AcroField">
+                <StackPanel Orientation="Vertical">
+                    <TextBox  x:Name="txtFieldName" HorizontalAlignment="Stretch" Text="Field name" TextWrapping="Wrap" />
+
+                    <Button x:Name="btnGoToField" Grid.Row="2" Grid.ColumnSpan="2" Content="Go To" Click="GoToField_Click" />
+                </StackPanel>
+            </GroupBox>
+
         </StackPanel>
     </Grid>
 </Window>
