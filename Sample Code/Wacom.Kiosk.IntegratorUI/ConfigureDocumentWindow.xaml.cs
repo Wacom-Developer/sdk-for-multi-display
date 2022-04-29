@@ -64,8 +64,6 @@ namespace Wacom.Kiosk.IntegratorUI
 
             if (msg == null)
             {
-                System.Windows.MessageBox.Show("Wrong data provided. Please check your parameters.");
-                //Close();
                 return;
             }
 
@@ -107,6 +105,7 @@ namespace Wacom.Kiosk.IntegratorUI
             }
             catch (Exception ex)
             {
+                System.Windows.MessageBox.Show($"Exception generating OpenDocumentPageMessage:\n{ex.Message}");
                 return null;
             }
         }
