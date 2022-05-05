@@ -14,6 +14,6 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="textbox_app_config_path" Grid.Column="0" Margin="10,24,10,0" VerticalAlignment="Top" TextWrapping="Wrap" Height="20" MaxLines="1"/>
         <Button x:Name="button_filepicker_app_config" Content="Browse..." Grid.Column="1" Margin="10,24,10,0" VerticalAlignment="Top" Height="20" Click="AppConfigFilePicker_Click"/>
-        <Button x:Name="button_update" Content="Update" Grid.Column="2" Margin="10,24,10,0" VerticalAlignment="Top" Height="20" Click="Change_Click"/>
+        <Button x:Name="button_update" Content="Update" Grid.Column="2" Margin="10,24,10,0" VerticalAlignment="Top" Height="20" Click="Change_Click" IsEnabled="{Binding ElementName=textbox_app_config_path,Path=Text.Length}"/>
     </Grid>
 </Window>

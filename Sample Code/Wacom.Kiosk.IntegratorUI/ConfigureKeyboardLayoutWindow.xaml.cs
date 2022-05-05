@@ -58,23 +58,31 @@ namespace Wacom.Kiosk.IntegratorUI
 
         private void UpdateBtn_Click(object sender, RoutedEventArgs e)
         {
-            using var jsonFileStream = File.OpenText(JsonFileTextBox.Text);
-            string layotJsonContent = jsonFileStream.ReadToEnd();
-            var picBase64 = Convert.ToBase64String(File.ReadAllBytes(LayoutImageTextBox.Text));
+            try
+            {
+                using var jsonFileStream = File.OpenText(JsonFileTextBox.Text);
+                string layotJsonContent = jsonFileStream.ReadToEnd();
+                var picBase64 = Convert.ToBase64String(File.ReadAllBytes(LayoutImageTextBox.Text));
 
 
-            var msg = new UpdateKeyboardLayoutMessage(KioskServer.Sender)
-                .WithName(LayoutNameTextBox.Text)
-                .WithLayout(layotJsonContent)
-                .WithPicture(picBase64)
-                .Build();
+                var msg = new UpdateKeyboardLayoutMessage(KioskServer.Sender)
+                    .WithName(LayoutNameTextBox.Text)
+                    .WithLayout(layotJsonContent)
+                    .WithPicture(picBase64)
+                    .Build();
 
-            if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
+                if (clientName.Equals("Everyone"))
+                    KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                else
+                    KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
 
-            this.Close();
+                this.Close();
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Exception generating UpdateKeyboardLayoutMessage:\n{ex.Message}");
+            }
         }
     }
 }

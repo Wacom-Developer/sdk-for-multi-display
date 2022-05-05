@@ -89,41 +89,48 @@ namespace Wacom.Kiosk.IntegratorUI
 
         private void button_open_signature_Click(object sender, RoutedEventArgs e)
         {
-            using var signatureDefinitionStream = File.OpenText(textbox_signature_definition.Text);
-            string definition = signatureDefinitionStream.ReadToEnd();
-
-            using var signatureConfigStream = File.OpenText(textbox_signature_config.Text);
-            string config = signatureConfigStream.ReadToEnd();
-
-            SignatureConfig signatureConfig = JsonConvert.DeserializeObject<SignatureConfig>(config);
-            if (!string.IsNullOrEmpty(textbox_Encryption_Certificate.Text))
+            try
             {
-                // V1.1
-                //signatureConfig.EncryptionCertificate = new X509Certificate2(textbox_Encryption_Certificate.Text);
-                signatureConfig.EncryptionCertificate = Convert.ToBase64String(File.ReadAllBytes(textbox_Encryption_Certificate.Text));
+                using var signatureDefinitionStream = File.OpenText(textbox_signature_definition.Text);
+                string definition = signatureDefinitionStream.ReadToEnd();
+
+                using var signatureConfigStream = File.OpenText(textbox_signature_config.Text);
+                string config = signatureConfigStream.ReadToEnd();
+
+                SignatureConfig signatureConfig = JsonConvert.DeserializeObject<SignatureConfig>(config);
+                if (!string.IsNullOrEmpty(textbox_Encryption_Certificate.Text))
+                {
+                    // V1.1
+                    //signatureConfig.EncryptionCertificate = new X509Certificate2(textbox_Encryption_Certificate.Text);
+                    signatureConfig.EncryptionCertificate = Convert.ToBase64String(File.ReadAllBytes(textbox_Encryption_Certificate.Text));
+                }
+
+                var hash = HashingUtility.GetHash("This string will be hashed");
+                var msg = new OpenSignatureMessage(KioskServer.Sender);
+                msg.WithDefinition(definition);
+                msg.WithConfig(signatureConfig);
+                msg.WithHash(hash);
+                msg.WithFromDocument(false);
+
+                if (!string.IsNullOrEmpty(textbox_signature_background.Text))
+                {
+                    using var signatureImageStream = File.OpenRead(textbox_signature_background.Text);
+                    byte[] bgImgBytes = new byte[signatureImageStream.Length];
+                    signatureImageStream.Read(bgImgBytes, 0, bgImgBytes.Length);
+                    var imgString = Convert.ToBase64String(bgImgBytes);
+                    msg.WithBackgroundImage(imgString);
+                }
+                if (clientAddress.Equals("Everyone"))
+                    KioskServer.Mq.BroadcastMessage(msg.Build().ToByteArray());
+                else
+                    KioskServer.Mq.SendMessage(clientAddress, msg.Build().ToByteArray());
+
+                Close();
             }
-
-            var hash = HashingUtility.GetHash("This string will be hashed");
-            var msg = new OpenSignatureMessage(KioskServer.Sender);
-            msg.WithDefinition(definition);
-            msg.WithConfig(signatureConfig);
-            msg.WithHash(hash);
-            msg.WithFromDocument(false);
-
-            if (!string.IsNullOrEmpty(textbox_signature_background.Text))
+            catch (Exception ex)
             {
-                using var signatureImageStream = File.OpenRead(textbox_signature_background.Text);
-                byte[] bgImgBytes = new byte[signatureImageStream.Length];
-                signatureImageStream.Read(bgImgBytes, 0, bgImgBytes.Length);
-                var imgString = Convert.ToBase64String(bgImgBytes);
-                msg.WithBackgroundImage(imgString);
+                System.Windows.MessageBox.Show($"Exception generating OpenSignatureMessage:\n{ex.Message}");
             }
-            if (clientAddress.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.Build().ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientAddress, msg.Build().ToByteArray());
-
-            Close();
         }
 
         private void button_filepicker_Encryption_Certificate_path_Click(object sender, RoutedEventArgs e)
