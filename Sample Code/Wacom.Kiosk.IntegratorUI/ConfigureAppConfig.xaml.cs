@@ -38,19 +38,26 @@ namespace Wacom.Kiosk.IntegratorUI
 
         private void Change_Click(object sender, RoutedEventArgs e)
         {
-            using StreamReader configFileStream = File.OpenText(textbox_app_config_path.Text);
-            string jsonConfigFile = configFileStream.ReadToEnd();
+            try
+            {
+                using StreamReader configFileStream = File.OpenText(textbox_app_config_path.Text);
+                string jsonConfigFile = configFileStream.ReadToEnd();
 
-            KioskMessage<UpdateConfigurationMessage> msg = new UpdateConfigurationMessage(KioskServer.Sender)
-                .WithJsonString(jsonConfigFile)
-                .Build();
+                KioskMessage<UpdateConfigurationMessage> msg = new UpdateConfigurationMessage(KioskServer.Sender)
+                    .WithJsonString(jsonConfigFile)
+                    .Build();
 
-            if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
+                if (clientName.Equals("Everyone"))
+                    KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                else
+                    KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
 
-            this.Close();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Exception generating UpdateConfigurationMessage:\n{ex.Message}");
+            }
         }
     }
 }

@@ -37,23 +37,23 @@
             <ColumnDefinition Width="0.50*"></ColumnDefinition>
             <ColumnDefinition Width="0.25*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Text="Document file path:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
-        <TextBox x:Name="textbox_document_path" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" MaxLines="1"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Text="Document file path:" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_document_path" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" MaxLines="1"/>
         <Button x:Name="button_filepicker_document_path" Content="Browse..." Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="button_filepicker_document_path_Click"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Text="Document View definition file path:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
-        <TextBox x:Name="textbox_view_definition_path" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" MaxLines="1"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Text="Document View definition file path:" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_view_definition_path" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" MaxLines="1"/>
         <Button x:Name="button_filepicker_document_definition_path" Content="Browse..." Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="button_filepicker_document_definition_path_Click"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" Text="(Optional) Thumbnails (from-to):" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
-        <TextBox x:Name="textbox_thumbnails_from" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" MaxLines="1"/>
-        <TextBox x:Name="textbox_thumbnails_to" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" Text="(Optional) Thumbnails (from-to):" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_thumbnails_from" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" MaxLines="1"/>
+        <TextBox x:Name="textbox_thumbnails_to" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" Text="Page to show (index):" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
-        <TextBox x:Name="textbox_page_index" Text="1" Grid.Column="1" Grid.Row="3" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" MaxLines="1"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" Text="Page to show (index):" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_page_index" Text="1" Grid.Column="1" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" MaxLines="1"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Top" Text="AcroField to select (optional):" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
-        <TextBox x:Name="textbox_acrofield_name" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" MaxLines="1"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Top" Text="AcroField to select (optional):" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_acrofield_name" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Stretch" MaxLines="1"/>
 
         <Button x:Name="button_open" Content="Open Document" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="button_open_Click"/>
     </Grid>

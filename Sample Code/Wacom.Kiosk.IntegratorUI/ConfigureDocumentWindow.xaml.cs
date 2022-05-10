@@ -83,7 +83,13 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="thumbnailsFrom">The thumbnails from.</param>
         /// <param name="thumbnailsTo">The thumbnails to.</param>
         /// <returns></returns>
-        private KioskMessage<OpenDocumentPageMessage> GenerateOpenDocumentMessage(string filePath, string definitionFilePath, int pageToParse, int thumbnailsFrom, int thumbnailsTo, string acroFieldName)
+        private KioskMessage<OpenDocumentPageMessage> GenerateOpenDocumentMessage(
+            string filePath, 
+            string definitionFilePath, 
+            int pageToParse, 
+            int thumbnailsFrom, 
+            int thumbnailsTo, 
+            string acroFieldName)
         {
             try
             {
@@ -93,6 +99,11 @@ namespace Wacom.Kiosk.IntegratorUI
                 using var docViewFileStream = File.OpenText(definitionFilePath);
                 var docViewDefinitionString = docViewFileStream.ReadToEnd();
                 var thumbsStr = pdfHelper.GetThumbnails(thumbnailsFrom, thumbnailsTo);
+
+                if (!string.IsNullOrEmpty(acroFieldName) && page.AcroFields.Find(field => field.Name == acroFieldName) == null)
+                {
+                    throw new ArgumentException($"Page {pageToParse} does not have an AcroField called '{acroFieldName}'");
+                }
 
                 PageCount = pdfHelper.DocumentPagesCount;
 

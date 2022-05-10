@@ -79,14 +79,21 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void button_open_Click(object sender, RoutedEventArgs e)
         {
-            var msg = new OpenPdfMessage(KioskServer.Sender).WithUrl(textbox_pdf_file_path.Text).Build();
+            try
+            {
+                var msg = new OpenPdfMessage(KioskServer.Sender).WithUrl(textbox_pdf_file_path.Text).Build();
 
-            if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
+                if (clientName.Equals("Everyone"))
+                    KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                else
+                    KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
 
-            this.Close();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Exception generating OpenPdfMessage:\n{ex.Message}");
+            }
         }
     }
 }

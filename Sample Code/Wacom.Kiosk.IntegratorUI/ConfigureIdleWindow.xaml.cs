@@ -53,22 +53,30 @@ namespace Wacom.Kiosk.IntegratorUI
 
         private void button_update_Click(object sender, RoutedEventArgs e)
         {
-            string mediaSelection = combobox_update_type.SelectedItem.ToString().ToLowerInvariant();
-            string mediaGroup = text_box_media_group.Text;
+            try
+            {
+                string mediaSelection = combobox_update_type.SelectedItem.ToString().ToLowerInvariant();
+                string mediaGroup = text_box_media_group.Text;
 
-            using var updateIdleMediaMessage = new UpdateIdleMediaMessage(KioskServer.Sender)
-                                        .WithMediaType(mediaSelection)
-                                        .WithGroupName(mediaGroup)
-                                        .WithFileNames(fileNames);
+                using var updateIdleMediaMessage = new UpdateIdleMediaMessage(KioskServer.Sender)
+                                            .WithMediaType(mediaSelection)
+                                            .WithGroupName(mediaGroup)
+                                            .WithFileNames(fileNames);
 
-            KioskMessage<UpdateIdleMediaMessage> msg = updateIdleMediaMessage.Build();
+                KioskMessage<UpdateIdleMediaMessage> msg = updateIdleMediaMessage.Build();
 
-            if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
+                if (clientName.Equals("Everyone"))
+                    KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                else
+                    KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
 
-            Close();
+                Close();
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Exception generating UpdateIdleMediaMessage:\n{ex.Message}");
+            }
         }
     }
 }

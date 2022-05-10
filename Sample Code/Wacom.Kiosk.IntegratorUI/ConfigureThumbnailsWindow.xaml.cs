@@ -35,55 +35,62 @@ namespace Wacom.Kiosk.IntegratorUI
 
         private void button_update_thumbnails_Click(object sender, RoutedEventArgs e)
         {
-            int.TryParse(combobox_thumbs_from.SelectedItem?.ToString(), out int thumbnailsFrom);
-            int.TryParse(combobox_thumbs_to.SelectedItem?.ToString(), out int thumbnailsTo);
-
-            if (thumbnailsFrom == 0)
+            try
             {
-                MessageBox.Show("Invalid start index.");
-                return;
-            }
+                int.TryParse(combobox_thumbs_from.SelectedItem?.ToString(), out int thumbnailsFrom);
+                int.TryParse(combobox_thumbs_to.SelectedItem?.ToString(), out int thumbnailsTo);
 
-            if (thumbnailsTo != 0 && thumbnailsFrom > thumbnailsTo)
-            {
-                MessageBox.Show("Starting index should be lesser than the end index.");
-                return;
-            }
+                if (thumbnailsFrom == 0)
+                {
+                    MessageBox.Show("Invalid start index.");
+                    return;
+                }
 
-            if (thumbnails == null || thumbnails.Count == 0)
-            {
-                MessageBox.Show("No thumbnails parsed from document");
-                return;
-            }
+                if (thumbnailsTo != 0 && thumbnailsFrom > thumbnailsTo)
+                {
+                    MessageBox.Show("Starting index should be lesser than the end index.");
+                    return;
+                }
 
-            if (thumbnailsTo == 0)
-            {
-                KioskMessage<UpdateThumbnailsMessage> msgUpdateSingle = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsFrom, thumbnails.ElementAt(thumbnailsFrom - 1)).Build();
+                if (thumbnails == null || thumbnails.Count == 0)
+                {
+                    MessageBox.Show("No thumbnails parsed from document");
+                    return;
+                }
+
+                if (thumbnailsTo == 0)
+                {
+                    KioskMessage<UpdateThumbnailsMessage> msgUpdateSingle = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsFrom, thumbnails.ElementAt(thumbnailsFrom - 1)).Build();
+                    if (clientName.Equals("Everyone"))
+                        KioskServer.Mq.BroadcastMessage(msgUpdateSingle.ToByteArray());
+                    else
+                        KioskServer.Mq.SendMessage(clientName, msgUpdateSingle.ToByteArray());
+
+                    Close();
+                    return;
+                }
+
+
+                Dictionary<int, string> thumbnailsData = new Dictionary<int, string>();
+
+                for (int i = thumbnailsFrom; i < thumbnailsTo + 1; i++)
+                {
+                    thumbnailsData.Add(i, thumbnails[i - 1]);
+                }
+
+                KioskMessage<UpdateThumbnailsMessage> msgUpdateMultiple = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsData).Build();
+
                 if (clientName.Equals("Everyone"))
-                    KioskServer.Mq.BroadcastMessage(msgUpdateSingle.ToByteArray());
+                    KioskServer.Mq.BroadcastMessage(msgUpdateMultiple.ToByteArray());
                 else
-                    KioskServer.Mq.SendMessage(clientName, msgUpdateSingle.ToByteArray());
+                    KioskServer.Mq.SendMessage(clientName, msgUpdateMultiple.ToByteArray());
 
                 Close();
-                return;
             }
-
-
-            Dictionary<int, string> thumbnailsData = new Dictionary<int, string>();
-
-            for (int i = thumbnailsFrom; i < thumbnailsTo + 1; i++)
+            catch (Exception ex)
             {
-                thumbnailsData.Add(i, thumbnails[i - 1]);
+                System.Windows.MessageBox.Show($"Exception generating UpdateThumbnailsMessage:\n{ex.Message}");
             }
-
-            KioskMessage<UpdateThumbnailsMessage> msgUpdateMultiple = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsData).Build();
-
-            if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msgUpdateMultiple.ToByteArray());
-            else
-                KioskServer.Mq.SendMessage(clientName, msgUpdateMultiple.ToByteArray());
-
-            Close();
         }
 
         private void button_filepicker_thumbnail_Click(object sender, RoutedEventArgs e)
