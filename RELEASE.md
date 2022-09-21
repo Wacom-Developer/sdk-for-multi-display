@@ -1,8 +1,30 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.0.9
+## Version 1.2.0
 
 ## History
+
+  ### 1.2.0  26 April 2022
+  - Added messages for:
+	  - SetElementValueMEssage
+	  - SetDocumentZoomMessage
+	  - ShowDialogMessage
+	  - DismissDialogMessage
+
+  - Added config setting:
+	  - FatalErrorMessageBox
+    
+  - Enhancements to thumbnails
+  - Improved user navigation between fields
+  - Bug fixes including issues with zooming and mirroring
+
+### 1.0.11  19 Jan  2022
+  - Added support for Creative versions of the DTK-1660
+  - Added support for Citrix
+
+### 1.0.10  27 July  2021
+  - Add config option to control display of message box when the tray app closes itself down
+    setting: FatalErrorMessageBox
 
 ### 1.0.9 15 July 2021
   * Bug fixes 
