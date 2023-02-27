@@ -170,6 +170,16 @@ Using the idle file collection 'default' or by a custom name set in 'Update Medi
 
 See *Idle Mode* in [Wacom Ink SDK for multi-display](https://developer-docs.wacom.com/sdk-for-multi-display/) for further details.
 
+## Show Dialog
+
+To open a dialog box, select "Show Dialog" and then select "Browse...".
+
+![Show Dialog](media/sample/show-dialog.png)
+
+A sample dialog box can be displayed by selecting MessageBox.xaml, which can be optionally configured as per the user's wishes.
+
+To close the dialog box, users may select the "Dismiss Dialog" box within the window.
+
 ### Update Media Files
 
 ![Update Media](media/sample/update-media.png)
