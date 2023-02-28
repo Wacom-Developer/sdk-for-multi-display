@@ -1,8 +1,12 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.2.0
+## Version 1.2.1
 
 ## History
+
+  ### 1.2.1  06 October 2022
+
+  - Bug fix: Cef Browser was not displaying some Web content
 
   ### 1.2.0  26 April 2022
   - Added messages for:
