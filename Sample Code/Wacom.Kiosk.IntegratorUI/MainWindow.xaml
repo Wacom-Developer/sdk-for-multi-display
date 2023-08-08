@@ -39,7 +39,6 @@
             <Button x:Name="btnPrivacy" Content="Privacy" Click="PrivacyClick"/>
             <Button x:Name="btnOpenDoc" Content="Open Document" Click="OpenDocClick"/>
             <Button x:Name="btnOpenPdf" Content="Open PDF" Click="OpenPdfClick" RenderTransformOrigin="1.685,-0.998"/>
-            <TextBox x:Name="txtBrowserUrl" Text="input web address" TextWrapping="Wrap" Height="Auto" HorizontalAlignment="Stretch"/>
             <Button x:Name="btnOpenWeb" Content="Open Web" Click="OpenWebClick"/>
             <ComboBox x:Name="cbxIdleMode" VerticalAlignment="Top"/>
             <TextBox x:Name="IdleCustDef" Text="default" TextWrapping="Wrap" Height="Auto" HorizontalAlignment="Stretch"/>
@@ -49,6 +48,7 @@
             <Button x:Name="btnOpenSignature" Content="Open Signature" Click="OpenSignatureClick"/>
             <Button Content="Update app config" Name="btnUpdateConfig" Click="UpdateConfigClick"/>
             <Button x:Name="btnUpdateLayout" Content="Update keyboard layout" Click="UpdateLayoutClick"/>
+            <Button x:Name="btnClearBrowserData" Content="Clear Browser Cookies" Click="ClearBrowserDataClick"/>
             <Button x:Name="btnClearLog" Content="Clear Logs" Margin="5,100,5,0" Click="ClearLogClick"/>
         </StackPanel>
 

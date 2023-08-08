@@ -210,11 +210,19 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Initiates display of a web page</summary>
         private void OpenWebClick(object sender, RoutedEventArgs e)
         {
-            SendMessage(
-                new OpenWebMessage(KioskServer.Sender)
-                              .WithUrl(txtBrowserUrl.Text)
-                              .Build()
-                              .ToByteArray());
+            if (ActiveClient != null)
+            {
+                ConfigureWebWindow webConfigurationWindow = new ConfigureWebWindow(selectedClient)
+                {
+                    Owner = this
+                };
+                webConfigurationWindow.Activate();
+                webConfigurationWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
         }
 
         /// <summary>Displays ConfigurePdfWindow for input of PDF to display</summary>
@@ -222,9 +230,12 @@ namespace Wacom.Kiosk.IntegratorUI
         {
             if (ActiveClient != null)
             {
-                ConfigurePdfWindow pdfConfigurationWindow = new ConfigurePdfWindow(selectedClient);
+                ConfigurePdfWindow pdfConfigurationWindow = new ConfigurePdfWindow(selectedClient)
+                {
+                    Owner = this
+                };
                 pdfConfigurationWindow.Activate();
-                pdfConfigurationWindow.Show(); 
+                pdfConfigurationWindow.ShowDialog(); 
             }
             else
             {
@@ -237,9 +248,12 @@ namespace Wacom.Kiosk.IntegratorUI
         {
             if (ActiveClient != null)
             {
-                ConfigureIdleWindow idleConfigWindow = new ConfigureIdleWindow(selectedClient);
+                ConfigureIdleWindow idleConfigWindow = new ConfigureIdleWindow(selectedClient)
+                {
+                    Owner = this
+                };
                 idleConfigWindow.Activate();
-                idleConfigWindow.Show(); 
+                idleConfigWindow.ShowDialog(); 
             }
             else
             {
@@ -252,9 +266,12 @@ namespace Wacom.Kiosk.IntegratorUI
         {
             if (ActiveClient != null)
             {
-                ConfigureThumbnailsWindow thumbnailsConfigurationWindow = new ConfigureThumbnailsWindow(selectedClient, logger);
+                ConfigureThumbnailsWindow thumbnailsConfigurationWindow = new ConfigureThumbnailsWindow(selectedClient, logger)
+                {
+                    Owner = this
+                };
                 thumbnailsConfigurationWindow.Activate();
-                thumbnailsConfigurationWindow.Show(); 
+                thumbnailsConfigurationWindow.ShowDialog(); 
             }
             else
             {
@@ -269,9 +286,12 @@ namespace Wacom.Kiosk.IntegratorUI
 
             if (activeClient != null)
             {
-                var signatureConfigurationWindow = new ConfigureSignatureWindow(activeClient.ClientAddress);
+                var signatureConfigurationWindow = new ConfigureSignatureWindow(activeClient.ClientAddress)
+                {
+                    Owner = this
+                };
                 signatureConfigurationWindow.Activate();
-                signatureConfigurationWindow.Show();
+                signatureConfigurationWindow.ShowDialog();
             }
             else
             {
@@ -304,9 +324,12 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigureKeyboardLayoutWindow for input of layout parameters</summary>
         private void UpdateLayoutClick(object sender, RoutedEventArgs e)
         {
-            ConfigureKeyboardLayoutWindow keyboardLayoutConfigurationWindow = new ConfigureKeyboardLayoutWindow(selectedClient);
+            ConfigureKeyboardLayoutWindow keyboardLayoutConfigurationWindow = new ConfigureKeyboardLayoutWindow(selectedClient)
+            {
+                Owner = this
+            };
             keyboardLayoutConfigurationWindow.Activate();
-            keyboardLayoutConfigurationWindow.Show();
+            keyboardLayoutConfigurationWindow.ShowDialog();
         }
 
         /// <summary>Initiates enabling/disabling a named element</summary>
@@ -369,9 +392,12 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <summary>Displays ConfigureAppConfig for input of config file name</summary>
         private void UpdateConfigClick(object sender, RoutedEventArgs e)
         {
-            ConfigureAppConfig appConfigUpdateWindow = new ConfigureAppConfig(selectedClient);
+            ConfigureAppConfig appConfigUpdateWindow = new ConfigureAppConfig(selectedClient)
+            {
+                Owner = this
+            };
             appConfigUpdateWindow.Activate();
-            appConfigUpdateWindow.Show();
+            appConfigUpdateWindow.ShowDialog();
         }
 
         /// <summary>Initiates toggling of Mirroring</summary>
@@ -496,6 +522,12 @@ namespace Wacom.Kiosk.IntegratorUI
                 AppendLog(msg.ToString());
             }), logger);
 
+            MessageHandlers.RegisterHandler(new MessageHandler<StartMirroringMessage>((msg) =>
+            {
+                bMirroring = true;
+                AppendLog(msg.ToString());
+            }), logger);
+
             MessageHandlers.RegisterHandler(new MessageHandler<StopMirroringMessage>((msg) =>
             {
                 bMirroring = false;
@@ -572,7 +604,10 @@ namespace Wacom.Kiosk.IntegratorUI
                 var sigImage = JsonPdfSerializer.ByteArrayToBitmap(msg.SignaturePictureBytes);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    var signaturePopupWindow = new SignatureImagePopupWindow(sigImage);
+                    var signaturePopupWindow = new SignatureImagePopupWindow(sigImage)
+                    {
+                        Owner = this
+                    };
                     signaturePopupWindow.Activate();
                     signaturePopupWindow.Show();
                 });
@@ -664,7 +699,7 @@ namespace Wacom.Kiosk.IntegratorUI
                     // Check if field has been signed
                     if (string.IsNullOrEmpty(sig))
                     {
-                        StartSignatureCapture(msg, document, activeClient);
+                        StartSignatureCapture(msg, activeClient);
                     }
                     else
                     {
@@ -682,7 +717,7 @@ namespace Wacom.Kiosk.IntegratorUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception: {ex}");
+                AppendLog($"Exception: {ex}");
                 throw;
             }
         }
@@ -691,7 +726,7 @@ namespace Wacom.Kiosk.IntegratorUI
 
         #region PDF Document Support
 
-        private void StartSignatureCapture(SignatureClickedMessage msg, PdfDocument document, ActiveClient activeClient)
+        private void StartSignatureCapture(SignatureClickedMessage msg, ActiveClient activeClient)
         {
             SignatureFieldName = msg.SignatureFieldName;
             // Register new handler to save PDF, when we've received field data
@@ -842,16 +877,19 @@ namespace Wacom.Kiosk.IntegratorUI
                         case FormFieldTypes.FPDF_FORMFIELD_RADIOBUTTON:
                             foreach (var ctl in acroFld.Controls)
                             {
-                                if (field.Value.ToString() == ctl.ExportValue)
+                                if (ctl is Patagames.Pdf.Net.AcroForms.PdfRadioButtonControl radioBtn)
                                 {
-                                    acroFld.Value = ctl.ExportValue;
-                                    break;
+                                    if (field.Value.ToString() == radioBtn.ExportValue)
+                                    {
+                                        acroFld.Value = radioBtn.ExportValue;
+                                        break;
+                                    } 
                                 }
                             }
                             break;
 
                         default:
-                            acroFld.Value = field.Value.ToString();
+                            acroFld.Value = field.Value?.ToString();
                             break;
                     }
 
@@ -924,8 +962,8 @@ namespace Wacom.Kiosk.IntegratorUI
             }
             catch (Exception ex)
             {
-                // TODO: LOG AND THROW EXCEPTION
-                return;
+                AppendLog($"Exception: {ex}");
+                throw;
             }
         }
 
@@ -1013,6 +1051,22 @@ namespace Wacom.Kiosk.IntegratorUI
 
         #endregion
 
+        private void ClearBrowserDataClick(object sender, RoutedEventArgs e)
+        {
+            if (ActiveClient != null)
+            {
+                ConfigureBrowserDataWindow browserDataConfigurationWindow = new ConfigureBrowserDataWindow(selectedClient)
+                {
+                    Owner = this
+                };
+                browserDataConfigurationWindow.Activate();
+                browserDataConfigurationWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
+        }
     }
 }
                     
