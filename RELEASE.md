@@ -1,9 +1,16 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.2.1
+## Version 1.3.0
 
 ## History
 
+### 1.3.0 26 June 2023
+  New app config settings:
+  - BrowserCachePath. This value allows users to set the file directory to keep cached data. Default value = null.
+  - Extended OpenWebMessage to include an Incognito mode parameter
+  Added message for:
+  - ClearBrowserCookiesMessage
+  - BrowserNavigateToMessage is now deprecated
   ### 1.2.1  06 October 2022
 
   - Bug fix: Cef Browser was not displaying some Web content
