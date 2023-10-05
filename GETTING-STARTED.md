@@ -159,7 +159,7 @@ See *PDF Display* in [Wacom Ink SDK for multi-display](https://developer-docs.wa
 
 ### Open Web
 Opens the web page specified in the 'input web address' field.
-The web page can be navigated through its links but data input is not supported.
+The web page can be navigated through its links. At this point, data input is supported.
 
 See *Web Display* in [Wacom Ink SDK for multi-display](https://developer-docs.wacom.com/sdk-for-multi-display/) for further details.
 
