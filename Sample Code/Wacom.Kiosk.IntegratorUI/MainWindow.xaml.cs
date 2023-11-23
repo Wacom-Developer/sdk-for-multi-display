@@ -106,7 +106,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 var pdfiumLicense = pdfiumLicenseStream.ReadToEnd();
                 if (!string.IsNullOrEmpty(pdfiumLicense))
                 {
-                    PdfCommon.Initialize(pdfiumLicense);  
+                    PdfCommon.Initialize(pdfiumLicense);
                 }
             }
         }
@@ -136,6 +136,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 cbxClients.Items.Add(client?.Name);
                 selectedClient = client?.Name;
                 cbxClients.SelectedItem = selectedClient;
+                AppendLog($"Client '{client?.Name}' connected");
             });
         }
 
@@ -306,7 +307,8 @@ namespace Wacom.Kiosk.IntegratorUI
             if (activeClient != null)
             {
                 ConfigureDocumentWindow documentConfigurationWindow = new ConfigureDocumentWindow(activeClient.Name, activeClient.ClientAddress, logger);
-                
+
+
                 if ((bool)documentConfigurationWindow.ShowDialog())
                 {
                     InputValues.Clear();
