@@ -58,7 +58,7 @@ For further samples check Wacom's Developer additional samples, see [https://git
 ## Documentation
 For further details on using the SDK see [Wacom Ink SDK for multi-display](http://developer-docs.wacom.com/sdk-for-multi-display/) 
 
-The API Reference is available directly in the downloaded SDK.
+The API Reference is available directly in the downloaded SDK via the supplied NuGet file. The API components and their descriptions can be viewed within Visual Studio. 
 
 ## Support
 If you experience issues with the technology components, please see related [FAQs](https://developer-support.wacom.com/hc/en-us)

@@ -82,13 +82,16 @@ i.e. replace the string in the tag:
 ----
 ## Build the Sample Code
 
-Open the project file ```Wacom.Kiosk.IntegratorUI.sln``` in Visual Studio 2019
+Open the project file ```Wacom.Kiosk.IntegratorUI.sln``` in Visual Studio 2019. 
+
 The project uses specific NuGet packages as follows:
+
 ```
-Wacom.Kiosk.SDK     // included in the SDK download: Wacom.Kiosk.SDK.1.0.1.2.nupkg
+Wacom.Kiosk.SDK     // included in the SDK download: Wacom.Kiosk.SDK.1.3.nupkg
                     // copy the file to a suitable folder in the project
 WatsonTcp           // v4.3.0.3
 ```
+
 To install the SDK NuGet package follow the steps:
 
 - select *Manage NuGet Packages...* (right click the solution project to display the menu)
@@ -156,7 +159,7 @@ See *PDF Display* in [Wacom Ink SDK for multi-display](https://developer-docs.wa
 
 ### Open Web
 Opens the web page specified in the 'input web address' field.
-The web page can be navigated through its links but data input is not supported.
+The web page can be navigated through its links. At this point, data input is supported.
 
 See *Web Display* in [Wacom Ink SDK for multi-display](https://developer-docs.wacom.com/sdk-for-multi-display/) for further details.
 
@@ -306,5 +309,7 @@ https://developer-docs.wacom.com/faqs/docs/q-tablet/tablet-driver#dth-1152-touch
 ----
 
 
+## Known issues
 
-
+- Previously, if a PDF had a dropdown and no option was selected, an empty string would have been returned as the value. With 1.3 of Kiosk, null will be returned. Any apps which don't allow for it may get a NullReferenceException.
+- When cookies are stored to the user's disk, sometimes, the integrator's Clear Browser Data will not clear these cookies if the URL isn't precisely mentioned in the box. 
