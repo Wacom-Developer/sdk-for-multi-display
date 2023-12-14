@@ -1,12 +1,14 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.3.1
+## Version 1.3.2
 
 ## History
 
-### 1.3.1 30 October 2023
+### 1.3.2 24 November 2023
   - Bug fix where PDFs were unable to be deleted after opening them within the sample app
 
+### 1.3.1 30 October 2023
+  - Bug fix where PDFs were unable to be deleted after opening them within the sample app
 
 ### 1.3.0 26 June 2023
   New app config settings:
