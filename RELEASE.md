@@ -5,7 +5,7 @@
 ## History
 
 ### 1.3.2 24 November 2023
-  - Bug fix where PDFs were unable to be deleted after opening them within the sample app
+  - Added ISO binary encryption
 
 ### 1.3.1 30 October 2023
   - Bug fix where PDFs were unable to be deleted after opening them within the sample app

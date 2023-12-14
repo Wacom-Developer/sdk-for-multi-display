@@ -87,7 +87,7 @@ Open the project file ```Wacom.Kiosk.IntegratorUI.sln``` in Visual Studio 2019.
 The project uses specific NuGet packages as follows:
 
 ```
-Wacom.Kiosk.SDK     // included in the SDK download: Wacom.Kiosk.SDK.1.3.nupkg
+Wacom.Kiosk.SDK     // included in the SDK download: Wacom.Kiosk.SDK.1.3.2.nupkg
                     // copy the file to a suitable folder in the project
 WatsonTcp           // v4.3.0.3
 ```
