@@ -1,8 +1,13 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.3.2
+## Version 1.3.3
 
 ## History
+
+### 1.3.3 19 January 2024
+  - Added support for signature document binding 
+  - Added multiplier to scroll amounts in SendMouseWheelEvent() call
+  - Improved positioning and sizing of CheckBoxes & RadioButtons
 
 ### 1.3.2 24 November 2023
   - Added ISO binary encryption
