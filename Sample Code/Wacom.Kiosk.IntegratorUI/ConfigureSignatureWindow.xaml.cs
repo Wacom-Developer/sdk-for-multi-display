@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
@@ -120,6 +121,18 @@ namespace Wacom.Kiosk.IntegratorUI
                     var imgString = Convert.ToBase64String(bgImgBytes);
                     msg.WithBackgroundImage(imgString);
                 }
+
+                if (!string.IsNullOrEmpty(textbox_Data_to_Sign.Text))
+                {
+                    var signedDataHash = new Wacom.Kiosk.UI.Parsers.Shared.Hash()
+                    {
+                        Type = Hash.Algorithm.SHA256,
+                        // Use Unicode encoding for compatibility with Wacom Signature SDK 
+                        Value = SHA256.Create().ComputeHash(Encoding.Unicode.GetBytes(textbox_Data_to_Sign.Text))
+                    };
+                    msg.WithSignedDataHash(signedDataHash);
+                }
+
                 if (clientAddress.Equals("Everyone"))
                     KioskServer.Mq.BroadcastMessage(msg.Build().ToByteArray());
                 else

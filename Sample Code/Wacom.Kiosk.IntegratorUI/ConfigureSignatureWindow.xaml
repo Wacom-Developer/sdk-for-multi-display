@@ -27,7 +27,10 @@
         <TextBlock Grid.Column="0" Margin="0,100,10,0" VerticalAlignment="Top" Text="Encryption Certificate:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
         <TextBox x:Name="textbox_Encryption_Certificate" Grid.Column="1" Margin="10,100,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
         <Button x:Name="button_filepicker_Encryption_Certificate_path" Content="Browse..." Grid.Column="2" Margin="10,100,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_filepicker_Encryption_Certificate_path_Click"/>
-        
-        <Button x:Name="button_open_signature" Content="Open Signature" Grid.Column="1" Margin="10,130,10,20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Click="button_open_signature_Click"/>
+
+        <TextBlock Grid.Column="0" Margin="0,130,10,0" VerticalAlignment="Top" Text="Signed data:" TextWrapping="Wrap" HorizontalAlignment="Right" Height="20"/>
+        <TextBox x:Name="textbox_Data_to_Sign" Grid.Column="1" Margin="10,130,10,0" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Stretch" Height="20" MaxLines="1"/>
+
+        <Button x:Name="button_open_signature" Content="Open Signature" Grid.Column="1" Margin="10,160,10,0" VerticalAlignment="Top" Height="20" Click="button_open_signature_Click"/>
     </Grid>
 </Window>
