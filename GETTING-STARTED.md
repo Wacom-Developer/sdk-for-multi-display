@@ -24,9 +24,9 @@ Scroll the Settings page to the Multiple displays section then select Extend:
 Download the SDK from https://developer.wacom.com/developer-dashboard
 
 * Login using your Wacom ID
-* Select **Downloads for multi-display**
-* Download **Wacom Ink SDK for multi-display**
-* Accept the End User License Agreement to use the SDK
+* Navigate to **Downloads for multi-display**
+* Select **More info** on **Wacom Ink SDK for multi-display for Windows**
+* Accept the End User License Agreement and select **Download** to use the SDK
 
 The downloaded Zip file contains the SDK with documentation.
 
