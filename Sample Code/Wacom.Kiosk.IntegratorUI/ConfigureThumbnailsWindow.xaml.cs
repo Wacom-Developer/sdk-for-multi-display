@@ -62,9 +62,9 @@ namespace Wacom.Kiosk.IntegratorUI
                 {
                     KioskMessage<UpdateThumbnailsMessage> msgUpdateSingle = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsFrom, thumbnails.ElementAt(thumbnailsFrom - 1)).Build();
                     if (clientName.Equals("Everyone"))
-                        KioskServer.Mq.BroadcastMessage(msgUpdateSingle.ToByteArray());
+                        KioskServer.ServerInstance.BroadcastMessage(msgUpdateSingle.ToByteArray());
                     else
-                        KioskServer.Mq.SendMessage(clientName, msgUpdateSingle.ToByteArray());
+                        KioskServer.ServerInstance.SendMessage(clientName, msgUpdateSingle.ToByteArray());
 
                     Close();
                     return;
@@ -81,9 +81,9 @@ namespace Wacom.Kiosk.IntegratorUI
                 KioskMessage<UpdateThumbnailsMessage> msgUpdateMultiple = new UpdateThumbnailsMessage(KioskServer.Sender).WithData(thumbnailsData).Build();
 
                 if (clientName.Equals("Everyone"))
-                    KioskServer.Mq.BroadcastMessage(msgUpdateMultiple.ToByteArray());
+                    KioskServer.ServerInstance.BroadcastMessage(msgUpdateMultiple.ToByteArray());
                 else
-                    KioskServer.Mq.SendMessage(clientName, msgUpdateMultiple.ToByteArray());
+                    KioskServer.ServerInstance.SendMessage(clientName, msgUpdateMultiple.ToByteArray());
 
                 Close();
             }

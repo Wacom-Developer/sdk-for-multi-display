@@ -31,6 +31,7 @@ using Wacom.Kiosk.UI.Parsers;
 using Page = Wacom.Kiosk.Pdf.Shared.Page;
 using Path = System.IO.Path;
 
+
 namespace Wacom.Kiosk.IntegratorUI
 {
     /// <summary>
@@ -69,12 +70,12 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <remarks>Should be at least 72 (PDF units). Higher values give a better looking image</remarks>
         private const int SignatureDPI = 300;
         /// <summary>XAML definition for simple signature capture screen</summary>
-        private const string defaultSignatureDefinition = @"<Window xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""     xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""     xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""     xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""     xmlns:local=""clr-namespace:Wacom.Kiosk.App"" mc:Ignorable=""d"" x:Name=""DocumentView"" Title=""DocumentView"" WindowStyle=""None"" Width=""1920"" Height=""1080"">    <Grid>        <Grid Name=""SignatureContainer""></Grid>        <Grid Panel.ZIndex=""2"" HorizontalAlignment=""Right"" Width=""150"" Background=""Transparent"">            <StackPanel Panel.ZIndex=""2"" Orientation=""Vertical"">                <Button x:Name=""AcceptSignature"" Content=""AcceptSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""CancelSignature"" Content=""CancelSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""ClearSignature"" Content=""ClearSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>            </StackPanel>        </Grid>    </Grid></Window>";
+        private const string defaultSignatureDefinition = @"<Window xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""     xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""     xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""     xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""     xmlns:local=""clr-namespace:Wacom.Kiosk.App"" mc:Ignorable=""d"" x:Name=""DocumentView"" Title=""DocumentView"" WindowStyle=""None"" Width=""1920"" Height=""1080"">   <Grid Background=""White"" >       <Grid Name=""SignatureContainer""></Grid>        <Grid Panel.ZIndex=""2"" HorizontalAlignment=""Right"" Width=""150"" Background=""Transparent"">            <StackPanel Panel.ZIndex=""2"" Orientation=""Vertical"">                <Button x:Name=""AcceptSignature"" Content=""AcceptSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""CancelSignature"" Content=""CancelSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>                <Button x:Name=""ClearSignature"" Content=""ClearSignature"" Width=""100"" Height=""100"" BorderThickness=""0"" HorizontalAlignment=""Right"" Margin=""25,25,25,0"" VerticalAlignment=""Top""></Button>            </StackPanel>        </Grid>    </Grid></Window>";
 
         private ActiveClient ActiveClient {
             get
             {
-                return KioskServer.Mq.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
+                return KioskServer.ServerInstance.ActiveClients.Where(el => el.ClientAddress.Equals(selectedClient)).FirstOrDefault();
             }
         }
 
@@ -84,20 +85,21 @@ namespace Wacom.Kiosk.IntegratorUI
 
         public MainWindow(ILogger logger)
         {
+            
             InitializeComponent();
             RegisterTabletMessageHandlers();
 
+            
             this.logger = logger;
-
             cbxClients.SelectionChanged += ClientSelectionChange;
             cbxIdleMode.ItemsSource = new List<string> { "Image mode", "Video mode" };
             cbxIdleMode.SelectedItem = "Image mode";
             cbxIdleMode.SelectionChanged += IdleModeSelectionChange;
-
-            KioskServer.Mq.Logger = this.logger;
-            KioskServer.Mq.OnClientConnected += OnClientConnected;
-            KioskServer.Mq.OnClientDisconnected += OnClientDisconnected;
-            KioskServer.Mq.OnSubscriberMessageReceived += OnMessageReceived;
+            
+            KioskServer.ServerInstance.Logger = this.logger;            
+            KioskServer.ServerInstance.OnClientConnected += OnClientConnected;
+            KioskServer.ServerInstance.OnClientDisconnected += OnClientDisconnected;
+            KioskServer.ServerInstance.OnSubscriberMessageReceived += OnMessageReceived;
 
             string licenseFile = @"Resources\PdfiumLicense.txt";
             if (File.Exists(licenseFile))
@@ -127,7 +129,7 @@ namespace Wacom.Kiosk.IntegratorUI
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var cert = new X509Certificate2("MyServer.pfx", "password");
-                var client = KioskServer.Mq.ActiveClients.Last();
+                var client = KioskServer.ServerInstance.ActiveClients.Last();
                 string license = ConfigurationManager.AppSettings.Get("license");
                 KioskServer.SendMessage(client.ClientAddress, new ClientAcceptedMessage(new KioskClient("Integrator"), client.Name)
                     .WithLicense(license)
@@ -164,7 +166,7 @@ namespace Wacom.Kiosk.IntegratorUI
         private void ClientSelectionChange(object sender, SelectionChangedEventArgs e)
         {
             string selectedClientName = (sender as ComboBox)?.SelectedItem?.ToString();
-            selectedClient = KioskServer.Mq.ActiveClients.Where(el => el.Name.Equals(selectedClientName)).FirstOrDefault()?.ClientAddress;
+            selectedClient = KioskServer.ServerInstance.ActiveClients.Where(el => el.Name.Equals(selectedClientName)).FirstOrDefault()?.ClientAddress;
         }
 
         /// <summary>Clears logged events from the window</summary>
@@ -481,6 +483,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 // assume mirroring and privacy are therefore both off
                 bMirroring = false;
                 bPrivacy = false;
+                if (msg.AesPasswordCypher != null) ((NamedPipeServer)KioskServer.ServerInstance).AesPasswordCipher = msg.AesPasswordCypher;
                 AppendLog(msg.ToString());
             }), logger);
 
@@ -626,7 +629,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="msg"></param>
         private void HandleThumbnailClicked(ThumbnailClickedMessage msg)
         {
-            ActiveClient activeClient = KioskServer.GetActiveClient(msg.Sender.Name);
+            var activeClient = KioskServer.GetActiveClient(msg.Sender.Name);
             if (activeClient.DocumentContext.DocumentPageNumber == msg.PageNumber)
             {
                 // Thumbnail is current page - do nothing
@@ -1045,7 +1048,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// <param name="bytes">The bytes.</param>
         private void SendMessage(byte[] bytes)
         {
-            if (KioskServer.Mq.ActiveClients.Count > 0)
+            if (KioskServer.ServerInstance.ActiveClients.Count > 0)
             {
                 KioskServer.SendMessage(selectedClient, bytes);
             }

@@ -52,7 +52,7 @@ namespace Wacom.Kiosk.IntegratorUI
             int.TryParse(textbox_thumbnails_to.Text, out int thumbnailsTo);
             string acroFieldName = textbox_acrofield_name.Text;
 
-            KioskServer.Mq.UpdateClientContext(clientName, pageNumber, documentPath);
+            KioskServer.ServerInstance.UpdateClientContext(clientName, pageNumber, documentPath);
 
             var msg = GenerateOpenDocumentMessage(
                             documentPath,
@@ -68,9 +68,9 @@ namespace Wacom.Kiosk.IntegratorUI
             }
 
             if (clientName.Equals("Everyone"))
-                KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                KioskServer.ServerInstance.BroadcastMessage(msg.ToByteArray());
             else
-                KioskServer.Mq.SendMessage(ClientIpAddress, msg.ToByteArray());
+                KioskServer.ServerInstance.SendMessage(ClientIpAddress, msg.ToByteArray());
 
             this.DialogResult = true;
             Close();

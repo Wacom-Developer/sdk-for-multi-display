@@ -134,9 +134,9 @@ namespace Wacom.Kiosk.IntegratorUI
                 }
 
                 if (clientAddress.Equals("Everyone"))
-                    KioskServer.Mq.BroadcastMessage(msg.Build().ToByteArray());
+                    KioskServer.ServerInstance.BroadcastMessage(msg.Build().ToByteArray());
                 else
-                    KioskServer.Mq.SendMessage(clientAddress, msg.Build().ToByteArray());
+                    KioskServer.ServerInstance.SendMessage(clientAddress, msg.Build().ToByteArray());
 
                 Close();
             }

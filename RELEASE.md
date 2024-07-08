@@ -1,8 +1,20 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.3.3
+## Version 1.4.2
 
 ## History
+
+### 1.4.2  08 July 2024
+  - New app config settings:
+    - UseNamedPipe: boolean that doesn't utilize TcpPort when true
+    - ClientCertificateThumbprint: certificate thumbprint for added security
+    - WindowBgColor: global parameter that adds 
+  - New IdleConfig parameter:
+    - BackgroundColor: default background added for IdleConfig  
+  - New Open Idle parameter WithBackGroundColor to set background color
+
+### 1.3.5  12 April 2024
+  - Added Citrix support for multi-user access 
 
 ### 1.3.3 19 January 2024
   - Added support for signature document binding 
@@ -22,6 +34,7 @@
   Added message for:
   - ClearBrowserCookiesMessage
   - BrowserNavigateToMessage is now deprecated
+
   ### 1.2.1  06 October 2022
 
   - Bug fix: Cef Browser was not displaying some Web content

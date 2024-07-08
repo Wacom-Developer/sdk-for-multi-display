@@ -43,9 +43,9 @@ namespace Wacom.Kiosk.IntegratorUI
                 byte[] msgBytes = msg.Build().ToByteArray();
 
                 if (_clientName.Equals("Everyone"))
-                    KioskServer.Mq.BroadcastMessage(msgBytes);
+                    KioskServer.ServerInstance.BroadcastMessage(msgBytes);
                 else
-                    KioskServer.Mq.SendMessage(_clientName, msgBytes);
+                    KioskServer.ServerInstance.SendMessage(_clientName, msgBytes);
 
                 this.Close();
             }

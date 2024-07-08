@@ -66,9 +66,9 @@ namespace Wacom.Kiosk.IntegratorUI
                 KioskMessage<UpdateIdleMediaMessage> msg = updateIdleMediaMessage.Build();
 
                 if (clientName.Equals("Everyone"))
-                    KioskServer.Mq.BroadcastMessage(msg.ToByteArray());
+                    KioskServer.ServerInstance.BroadcastMessage(msg.ToByteArray());
                 else
-                    KioskServer.Mq.SendMessage(clientName, msg.ToByteArray());
+                    KioskServer.ServerInstance.SendMessage(clientName, msg.ToByteArray());
 
                 Close();
 
