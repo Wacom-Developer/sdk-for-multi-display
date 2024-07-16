@@ -313,3 +313,5 @@ https://developer-docs.wacom.com/faqs/docs/q-tablet/tablet-driver#dth-1152-touch
 
 - Previously, if a PDF had a dropdown and no option was selected, an empty string would have been returned as the value. With 1.3 of Kiosk, null will be returned. Any apps which don't allow for it may get a NullReferenceException.
 - When cookies are stored to the user's disk, sometimes, the integrator's Clear Browser Data will not clear these cookies if the URL isn't precisely mentioned in the box. 
+-  A Patagames library included within the SDK, that is used to demonstrate certain PDF manipulations, has a trial period. After this trial period, an error of `Patagames.Pdf.Net.Exception` may be thrown, but sample functionality will continue to work as intended.
+   - > NB: PDF manipulation such as that enabled by Patagames will require a third-party PDF library to be selected & licensed. 
