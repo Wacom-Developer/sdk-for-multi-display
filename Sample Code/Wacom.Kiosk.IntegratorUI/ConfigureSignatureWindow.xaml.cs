@@ -106,11 +106,9 @@ namespace Wacom.Kiosk.IntegratorUI
                     signatureConfig.EncryptionCertificate = Convert.ToBase64String(File.ReadAllBytes(textbox_Encryption_Certificate.Text));
                 }
 
-                var hash = HashingUtility.GetHash("This string will be hashed");
                 var msg = new OpenSignatureMessage(KioskServer.Sender);
                 msg.WithDefinition(definition);
                 msg.WithConfig(signatureConfig);
-                msg.WithHash(hash);
                 msg.WithFromDocument(false);
 
                 if (!string.IsNullOrEmpty(textbox_signature_background.Text))

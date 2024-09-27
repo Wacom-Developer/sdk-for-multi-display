@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
-using Patagames.Pdf.Net.BasicTypes;
-using Patagames.Pdf.Enums;
-using Patagames.Pdf.Net;
 
 
 namespace Wacom.Kiosk.IntegratorUI
 {
+    [Obsolete("sample Implementation to sign a pdf")]
     /// <summary>
     /// Handles digital signing of a PDF document and very basic interrogation of signatures
     /// </summary>
@@ -20,6 +18,7 @@ namespace Wacom.Kiosk.IntegratorUI
     /// </remarks>
     class DocumentSigner
     {
+        /*
         /// <summary>
         /// Digitally signs a document and inserts a handwritten signature image
         /// </summary>
@@ -44,23 +43,22 @@ namespace Wacom.Kiosk.IntegratorUI
             {
                 if (document != null)
                 {
-                    PdfTypeDictionary fieldDict = GetFieldDictionary(document, fieldName);
-                    if (fieldDict != null)
+
+                    PdfFormWidget formWidget = document.Form as PdfFormWidget;
+
+                    // Check if 'NeedAppearances' is set and modify it
+                    if (formWidget.NeedAppearances == true)
                     {
-                        // If AcroForm dictionary contains a 'NeedAppearances' key with value 'true' then
-                        // change to 'false' (since it can cause issues with signing).
-                        PdfTypeDictionary formDict = document.Root["AcroForm"].As<PdfTypeDictionary>();
-                        if (formDict != null && formDict.ContainsKey("NeedAppearances") && formDict.GetBooleanBy("NeedAppearances"))
-                        {
-                            formDict.SetBooleanAt("NeedAppearances", false);
-                        }
-
-                        var stream = new MemoryStream();
-                        document.Save(stream, SaveFlags.NoIncremental | SaveFlags.GenerateFreeEntries);
-                        document.Dispose();
-
-                        SignWithSpire(stream, page, fieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
+                        formWidget.NeedAppearances = false;
+                        Console.WriteLine("Changed 'NeedAppearances' from true to false.");
                     }
+                    else
+                    {
+                        Console.WriteLine("'NeedAppearances' was already set to false or not set.");
+                    }
+
+                    SignWithSpire(document, page, fieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
+                    
                 }
             }
             catch (Exception ex)
@@ -105,13 +103,14 @@ namespace Wacom.Kiosk.IntegratorUI
         private Spire.Pdf.Graphics.PdfImage SigImage;
         private RectangleF SigImageRect;
 
+        
         /// <summary>
         /// Get the field dictionary for the named field
         /// </summary>
         /// <param name="document"></param>
         /// <param name="fieldName"></param>
         /// <returns>PdfTypeDictionary</returns>
-        private PdfTypeDictionary GetFieldDictionary(PdfDocument document, string fieldName)
+        private PdfTypeDictionary GetFieldDictionary(Patagames.Pdf.Net.PdfDocument document, string fieldName)
         {
             PdfTypeDictionary fieldDict = null;
             if (document != null && document.Root.ContainsKey("AcroForm"))
@@ -135,6 +134,7 @@ namespace Wacom.Kiosk.IntegratorUI
 
             return fieldDict;
         }
+        
 
         /// <summary>
         /// Signs a PDF document using FreeSpire.PDF library
@@ -151,22 +151,21 @@ namespace Wacom.Kiosk.IntegratorUI
         /// but FreeSpire.PDF does not currently support this so an alternative (possibly paid-for) PDF library 
         /// would be required.
         /// </remarks>
-        private void SignWithSpire(Stream stream, int pageNum, string fieldName, string sigText, byte[] sigImageBytes, int SignatureDPI, string documentPath)
+        private void SignWithSpire(PdfDocument document, int pageNum, string fieldName, string sigText, byte[] sigImageBytes, int SignatureDPI, string documentPath)
         {
-            Spire.Pdf.PdfDocument doc = new Spire.Pdf.PdfDocument(stream);
-            Spire.Pdf.PdfPageBase page = doc.Pages[pageNum - 1];
+            Spire.Pdf.PdfPageBase page = document.Pages[pageNum - 1];
 
             // Load certificate from resources
             var cert = new Spire.Pdf.Security.PdfCertificate(@"Resources\Wacom.Kiosk.IntegratorUI.p12", "password");
 
             // Find signature field widget
-            var formWidget = doc.Form as Spire.Pdf.Widget.PdfFormWidget;
+            var formWidget = document.Form as Spire.Pdf.Widget.PdfFormWidget;
             var fieldWidget = formWidget.FieldsWidget[fieldName] as Spire.Pdf.Widget.PdfSignatureFieldWidget;
 
             ConfigureSigImage(sigImageBytes, fieldWidget.Bounds.Size, SignatureDPI);
 
             // Create and initialize signature object
-            var signature = new Spire.Pdf.Security.PdfSignature(doc, page, cert, fieldWidget.Name, fieldWidget)
+            var signature = new Spire.Pdf.Security.PdfSignature(document, page, cert, fieldWidget.Name, fieldWidget)
             {
                 Certificated = true,
                 DocumentPermissions = Spire.Pdf.Security.PdfCertificationFlags.ForbidChanges,
@@ -175,8 +174,9 @@ namespace Wacom.Kiosk.IntegratorUI
             string url = "http://timestamp.wosign.com/rfc3161";
             signature.ConfigureTimestamp(url);
             signature.ConfigureCustomGraphics(DrawSigImage);
+            
 
-            doc.SaveToFile(documentPath);
+            document.SaveToFile(documentPath);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Wacom.Kiosk.IntegratorUI
             SigImageRect = new RectangleF(x, y, sigSize.Width, sigSize.Height);
         }
 
-
+        */
     }
 
 }

@@ -19,7 +19,7 @@ namespace Wacom.Kiosk.IntegratorUI
         /// </summary>
         public static Server ServerInstance { get; } = new ServerFactory().Create(certificate: "MyServer.pfx", certificatePassword: "password", port: 5555, local: true, useNamedPipeServer: ConfigurationManager.AppSettings.Get("useNamedPipes"));
         //public static MQServer ServerInstance { get; } = new MQServer(certificate: "MyServer.pfx", certificatePassword: "password", port: 5555, local: true);
-        //public static NamedPipeServer ServerInstance { get; } = new NamedPipeServer("MyServer.pfx","password");
+       // public static NamedPipeServer ServerInstance { get; } = new NamedPipeServer("MyServer.pfx","password");
 
         /// <summary>
         /// The kiosk client that the server uses to communicate with the tablet client.

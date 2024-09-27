@@ -1,24 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.4.2</Version>
+    <Version>2.0.7</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Resources\Fonts\**" />
     <EmbeddedResource Remove="Resources\Fonts\**" />
     <None Remove="Resources\Fonts\**" />
     <Page Remove="Resources\Fonts\**" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="Resources\TabletTrayIcon.ico" />
   </ItemGroup>
-
   <ItemGroup>
     <Page Remove="Resources\Definitions\DocumentView.xaml" />
     <Page Remove="Resources\Definitions\DocumentViewLeftPanel.xaml" />
@@ -38,7 +34,6 @@
     <Page Remove="Resources\OtherWindow2.operator.xaml" />
     <Page Remove="Resources\SignatureView.xaml" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Resources\Definitions\DocumentView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -52,36 +47,33 @@
     </None>
     <None Include="Resources\Definitions\SignatureView.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CustomToolNamespace></CustomToolNamespace>
+      <CustomToolNamespace>
+      </CustomToolNamespace>
     </None>
     <None Include="Resources\Definitions\SignatureViewWholeScreen.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="FreeSpire.PDF" Version="7.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
-    <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="Pdfium.Net.SDK" Version="4.81.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="1.4.2" />
-    <PackageReference Include="WatsonTcp" Version="4.8.14.10" />
+    <PackageReference Include="FreeSpire.PDF" Version="10.2.0" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="Pdfium.Net.SDK" Version="4.92.2704" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="2.0.7" />
+    <PackageReference Include="WatsonTcp" Version="6.0.6" />
     <PackageReference Include="XmpCore" Version="6.1.10.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Integrator.Logger.Serilog\Integrator.Logger.Serilogger.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Resources\Definitions\MessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Config\signature_config_WholeScreen.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -216,7 +208,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\en_UK.pic">
-     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -318,11 +310,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Page Update="ConfigureDialogWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
-
 </Project>

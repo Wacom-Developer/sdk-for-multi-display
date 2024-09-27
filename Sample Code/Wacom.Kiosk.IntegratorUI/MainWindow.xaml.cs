@@ -14,9 +14,7 @@ using System.Text;
 using Microsoft.Win32;
 using Microsoft.Extensions.Logging;
 
-using Patagames.Pdf;
-using Patagames.Pdf.Enums;
-using Patagames.Pdf.Net;
+
 
 using Wacom.Kiosk.Integrator;
 using Wacom.Kiosk.Message.Handler;
@@ -30,6 +28,10 @@ using Wacom.Kiosk.UI.Parsers;
 
 using Page = Wacom.Kiosk.Pdf.Shared.Page;
 using Path = System.IO.Path;
+using Patagames.Pdf.Net;
+using Patagames.Pdf.Net.AcroForms;
+using Patagames.Pdf.Net.BasicTypes;
+
 
 
 namespace Wacom.Kiosk.IntegratorUI
@@ -95,12 +97,13 @@ namespace Wacom.Kiosk.IntegratorUI
             cbxIdleMode.ItemsSource = new List<string> { "Image mode", "Video mode" };
             cbxIdleMode.SelectedItem = "Image mode";
             cbxIdleMode.SelectionChanged += IdleModeSelectionChange;
-            
-            KioskServer.ServerInstance.Logger = this.logger;            
+
+            KioskServer.ServerInstance.Logger = this.logger;
             KioskServer.ServerInstance.OnClientConnected += OnClientConnected;
             KioskServer.ServerInstance.OnClientDisconnected += OnClientDisconnected;
             KioskServer.ServerInstance.OnSubscriberMessageReceived += OnMessageReceived;
 
+            /*
             string licenseFile = @"Resources\PdfiumLicense.txt";
             if (File.Exists(licenseFile))
             {
@@ -111,6 +114,7 @@ namespace Wacom.Kiosk.IntegratorUI
                     PdfCommon.Initialize(pdfiumLicense);
                 }
             }
+            */
         }
 
         #endregion
@@ -133,7 +137,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 string license = ConfigurationManager.AppSettings.Get("license");
                 KioskServer.SendMessage(client.ClientAddress, new ClientAcceptedMessage(new KioskClient("Integrator"), client.Name)
                     .WithLicense(license)
-                    .WithCertificate(Convert.ToBase64String(cert.RawData))
+                    .WithPublicKey(Convert.ToBase64String(cert.GetPublicKey()))
                     .Build().ToByteArray());
                 cbxClients.Items.Add(client?.Name);
                 selectedClient = client?.Name;
@@ -467,6 +471,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 AppendLog("Feature not licensed");
             }), logger);
 
+
             MessageHandlers.RegisterHandler(new MessageHandler<OperationFailedMessage>((msg) =>
             {
                 AppendLog(msg.ToString());
@@ -584,9 +589,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 {
                     try
                     {
-                        // Sign the document
-                        SetFieldValues(activeClient.DocumentContext.DocumentPath, out PdfDocument document, out PdfForms forms);
-                        SignDocument(msg.Sender.Name, document, msg.SignatureMetadata, msg.SignaturePictureBytes, saveAs);
+                        // Logic for applying a Digital Signature to a Pdf should be called from here
 
                         activeClient.DocumentContext.DocumentPath = saveAs;
                     }
@@ -695,29 +698,19 @@ namespace Wacom.Kiosk.IntegratorUI
             try
             {
                 AppendLog($"{msg.SignatureFieldName} clicked");
-                var document = PdfDocument.Load(activeClient.DocumentContext.DocumentPath);
-
-                if (document.Pages.Count <= 10)
+                using PdfHelper pdfHelper = new PdfHelper(logger);
+                var sig = pdfHelper.GetSignatureInfo(ActiveClient.DocumentContext.DocumentPath, msg.SignatureFieldName);
+                // Check if field has been signed
+                if (string.IsNullOrEmpty(sig))
                 {
-                    var sig = DocumentSigner.GetSignatureInfo(activeClient.DocumentContext.DocumentPath, msg.SignatureFieldName);
-
-                    // Check if field has been signed
-                    if (string.IsNullOrEmpty(sig))
-                    {
-                        StartSignatureCapture(msg, activeClient);
-                    }
-                    else
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            MessageBox.Show(sig, "Signature", MessageBoxButton.OK, MessageBoxImage.Information);
-                        });
-                    }
-
-                }            
+                    StartSignatureCapture(msg, activeClient);
+                }
                 else
                 {
-                    MessageBox.Show($"PDF library used for signatures doesn't handle documents with more than 10 pages");
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show(sig, "Signature", MessageBoxButton.OK, MessageBoxImage.Information);
+                    });
                 }
             }
             catch (Exception ex)
@@ -771,9 +764,16 @@ namespace Wacom.Kiosk.IntegratorUI
                         sb.Append($"{field.Key}:{field.Value}");
                     }
                 }
-                var hash = HashingUtility.GetHash(sb.ToString());
+                //var hash = HashingUtility.GetHash(sb.ToString());
+                //var extraData = new Dictionary<string, string>
+                //{
+                //    { "testData1", "Data" },
+                //    { "testData2", "Data" },
+                //    { "testData3", "Data" },
+                //};
+                //SendMessage(new OpenSignatureMessage(KioskServer.Sender).WithDefinition(defaultSignatureDefinition).WithExtraData(extraData).WithConfig(signatureConfig).WithFromDocument(true).Build().ToByteArray());
+                SendMessage(new OpenSignatureMessage(KioskServer.Sender).WithDefinition(defaultSignatureDefinition).WithConfig(signatureConfig).WithFromDocument(true).Build().ToByteArray());
 
-                SendMessage(new OpenSignatureMessage(KioskServer.Sender).WithDefinition(defaultSignatureDefinition).WithConfig(signatureConfig).WithHash(hash).WithFromDocument(true).Build().ToByteArray());
                 Debug.WriteLine("PdfDocument going out of scope");
 
             }), logger);
@@ -781,22 +781,6 @@ namespace Wacom.Kiosk.IntegratorUI
             SendMessage(new GetPageDataMessage(KioskServer.Sender).Build().ToByteArray());
         }
 
-        /// <summary>
-        /// Digitally signs a document and inserts the image of a handwritten signature 
-        /// </summary>
-        /// <param name="clientName"></param>
-        /// <param name="document">The document to sign</param>
-        /// <param name="sigText">Biometric (FSS) signature data</param>
-        /// <param name="sigImageBytes">Signature image data</param>
-        /// <param name="documentPath">file to save signed document to</param>
-        private void SignDocument(string clientName, PdfDocument document, string sigText, byte[] sigImageBytes, string documentPath)
-        {
-            ActiveClient activeClient = KioskServer.GetActiveClient(clientName);
-
-            var docSigner = new DocumentSigner();
-
-            docSigner.SignPDF(document, activeClient.DocumentContext.DocumentPageNumber, SignatureFieldName, sigText, sigImageBytes, SignatureDPI, documentPath);
-        }
 
         /// <summary>
         /// Handles click of DocumentAccepted button
@@ -812,38 +796,7 @@ namespace Wacom.Kiosk.IntegratorUI
             {
                 AppendLog(msg.ToString());
 
-                // Save field values from current page
-                InputValues[activeClient.DocumentContext.DocumentPageNumber] = msg.PageData;
-
-                SetFieldValues(activeClient.DocumentContext.DocumentPath, out PdfDocument document, out PdfForms forms);
-
-                string saveAs = activeClient.DocumentContext.DocumentPath;
-                if (saveAs.StartsWith(AppContext.BaseDirectory))
-                {
-                    // document was loaded from this app's resources, prompt to save it elsewhere
-                    saveAs = GetSaveAs(activeClient.DocumentContext.DocumentPath);
-                }
-                if (saveAs != null)
-                {
-                    SaveFlags saveFlags = SaveFlags.NoIncremental;
-
-                    if (saveAs == activeClient.DocumentContext.DocumentPath)
-                    {
-                        // Trying to save to the same file while it is still open results in a file in use
-                        // exception so create an in memory copy and Dispose the current document to close 
-                        // the file
-                        var stream = new MemoryStream();
-                        document.Save(stream, saveFlags);
-                        document.Dispose();
-                        document = PdfDocument.Load(stream);
-                    }
-                    else
-                    {
-                        activeClient.DocumentContext.DocumentPath = saveAs;
-                    }
-                    document.Save(saveAs, saveFlags);
-                }
-                document.Dispose();
+                
                 SendMessage(new OpenIdleMessage(KioskServer.Sender).Build().ToByteArray());
             }), logger);
 
@@ -858,49 +811,7 @@ namespace Wacom.Kiosk.IntegratorUI
 
             SendMessage(new ShowDialogMessage(KioskServer.Sender).WithXAML(xaml).Build().ToByteArray());
         }
-
-
-        /// <summary>
-        /// Restores previously stored field values
-        /// </summary>
-        /// <param name="documentPath">Path to original PDF document</param>
-        /// <param name="document">Returns PdfDocument  object</param>
-        /// <param name="forms">Returns PdfForms object</param>
-        private void SetFieldValues(string documentPath, out PdfDocument document, out PdfForms forms)
-        {
-            forms = new PdfForms();
-            document = PdfDocument.Load(documentPath, forms);
-            var acroFields = forms.InterForm.Fields;
-
-            foreach (var page in InputValues.Values)
-            {
-                foreach (var field in page)
-                {
-                    var acroFld = acroFields.Find(fld => fld.FullName == field.Key);
-                    switch (acroFld.FieldType)
-                    {
-                        case FormFieldTypes.FPDF_FORMFIELD_RADIOBUTTON:
-                            foreach (var ctl in acroFld.Controls)
-                            {
-                                if (ctl is Patagames.Pdf.Net.AcroForms.PdfRadioButtonControl radioBtn)
-                                {
-                                    if (field.Value.ToString() == radioBtn.ExportValue)
-                                    {
-                                        acroFld.Value = radioBtn.ExportValue;
-                                        break;
-                                    } 
-                                }
-                            }
-                            break;
-
-                        default:
-                            acroFld.Value = field.Value?.ToString();
-                            break;
-                    }
-
-                }
-            }
-        }
+       
 
         /// <summary>
         /// Handles PageNext/PageBack button click
