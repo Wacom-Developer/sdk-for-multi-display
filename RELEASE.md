@@ -1,8 +1,20 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 1.4.2
+## Version 2.0.7
 
 ## History
+
+### 2.0.7  27 September 2024
+  - Updated the SDK to be based on .NET 8
+  - Updated license structure and config
+  - Reworked adding extra data to signature method
+  - New app config settings:
+    - SecureCommunication: Boolean value that when true, will look for a certificate
+    - UseLocalCertificate: Boolean value that when true, reads a certificate from a machine/user store
+    - TrustedServers: Array containing whitelisted server instances. NB: replaces old setting ServerCertificates.
+  - Bug fixes including:
+    - Fix to latency issue
+    - Fix to button not correctly raising event
 
 ### 1.4.2  08 July 2024
   - New app config settings:

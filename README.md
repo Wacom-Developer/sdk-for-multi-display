@@ -1,7 +1,7 @@
 # Wacom Ink SDK for multi-display
 
 
-> **Version 2 of the Wacom Ink SDK for multi-display, based on .NET 8, is scheduled for release soon.** 
+> **Version 2 of the Wacom Ink SDK for multi-display, based on .NET 8, has been released!** 
 >
 > **Please note that, due to .NET Core 3.1 eventually no longer receiving bug fixes, version 1 will be supported for a limited period after the release of version 2.**
 >
