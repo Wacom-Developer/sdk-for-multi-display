@@ -2,7 +2,7 @@
 
 ## 開発環境
 
-サンプルアプリケーションは、SDKの使用方法を示すために Windows 10 以降用に提供されています。
+サンプルアプリケーションは、SDKの使用方法を示すために Windows10 以降用に提供されています。
 - サンプルコードをビルドするには、Microsoft Visual Studio 2019 が必要です。
 - Client Tray Application には、.NET Core ランタイム 3.1 が必要です。
 
@@ -24,9 +24,9 @@ Windowsのディスプレイ設定で、Wacom ディスプレイ タブレット
 https://developer.wacom.com/developer-dashboard からSDKをダウンロードします、
 
 * Wacom IDを使用してログインします
-* [**multi-displayのダウンロード**]を選択します
-* **Wacom Ink SDK for multi-display** をダウンロードします
-* SDKを使用するには、エンドユーザー使用許諾契約に同意します
+* [**multi-displayのダウンロード**]に移動します
+* **Wacom Ink SDK for Multi-display Windows用** の**詳細**を選択します
+* SDKを使用するには、エンドユーザー使用許諾契約に同意し**ダウンロード**を選択します
 
 ダウンロードしたZipファイルには、ドキュメント付きのSDKが含まれています。
 
@@ -74,10 +74,11 @@ Client Tray Application は、起動時にアイドルモード用に構成さ�
 --------
 ## サンプルコードを作成する
 
-Visual Studio 2019 で ```Wacom.Kiosk.IntegratorUI.sln``` プロジェクトファイルを開きます。
+Visual Studio 2019 で ```Wacom.Kiosk.IntegratorUI.sln``` プロジェクトファイルを開きます。  
+
 このプロジェクトでは、次に示すに示す特定のNuGetパッケージを使用します、
 ```
-Wacom.Kiosk.SDK // SDKダウンロードに含まれています：Wacom.Kiosk.SDK.1.0.1.2.nupkg
+Wacom.Kiosk.SDK // SDKダウンロードに含まれています：Wacom.Kiosk.SDK.1.3.2.nupkg
                     //ファイルをプロジェクト内の適切なフォルダにコピーします
 WatsonTcp // v4.3.0.3
 ```
@@ -150,7 +151,7 @@ Webページはそのリンクを介してナビゲートできますが、デ�
 
 詳細については、[Wacom Ink SDK for multi-display](https://developer-docs.wacom.com/sdk-for-multi-display/) の *Web Display* を参照してください。
 
-### アイドルを開く (Open Idle)  
+### アイドルを開く (Open Idle)
 ドロップダウンによって決定されるタブレット ディスプレイでアイドルモードを選択します。
 
 * 画像モード
@@ -159,17 +160,6 @@ Webページはそのリンクを介してナビゲートできますが、デ�
 アイドルファイルコレクション「デフォルト」または「メディアファイルの更新」で設定されたカスタム名を使用します
 
 詳細については、[Wacom Ink SDK for multi-display](https://developer-docs.wacom.com/sdk-for-multi-display/) の *Idle Mode* を参照してください。
-
-## ダイアログを開く
-
-ダイアログボックスを開くには、「ダイアログを表示」を選択し、「参照...」を選択します。
-
-![Show Dialog](media/sample/show-dialog.png)
-
-MessageBox.xaml を選択するとサンプル ダイアログ ボックスが表示され、ユーザーの希望に応じたオプションで構成できます。
-
-ダイアログ ボックスを閉じるには、ウィンドウ内の [ダイアログを閉じる] ボックスを選択します。
-
 
 ### メディアファイルを更新 (Update Media Files)
 
@@ -267,7 +257,6 @@ C：\Program Files\Tablet\Wacom\32\PrefUtil.exe
 クリック：
 すべてのユーザー設定... [削除]
 ```
-注意: 最近のドライバー バージョンでは、PrefUtil.exe は C:\Program Files\Tablet\Wacom\PrefUtil.exe にあります。
 
 ### オンスクリーンキーボード
 
@@ -295,3 +284,9 @@ https://developer-docs.wacom.com/faqs/docs/q-tablet/tablet-driver#dth-1152-touch
 
 --------
 --------
+## 既知の不具合
+
+- 以前は、PDF にドロップダウンがあり、オプションが選択されていない場合、値として空の文字列が返されていました。Kiosk 1.3 では、null が返されます。これを許可しないアプリでは、NullReferenceException が発生する可能性があります。
+- Cookieがユーザーのディスクに保存される場合、ボックスに URL が正確に記載されていないと、インテグレーターの「閲覧履歴データの削除」ではこれらのCookieが消去されないことがあります。
+- SDK に含まれる Patagames ライブラリは、特定の PDF 操作のデモンストレーションに使用されますが、試用期間があります。この試用期間が過ぎると、`Patagames.Pdf.Net.Exception` のエラーがスローされる場合がありますが、サンプル機能は引き続き意図したとおりに動作します。
+   - > 注意: Patagames によって有効になるような PDF 操作には、サードパーティの PDF ライブラリを選択してライセンスを取得する必要があります。
