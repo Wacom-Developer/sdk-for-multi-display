@@ -94,7 +94,24 @@ namespace Wacom.Kiosk.IntegratorUI
             try
             {
                 using var pdfHelper = new PdfHelper(logger);
-                string pageJson = pdfHelper.ParsePage(filePath, pageToParse);
+                
+                //initialize with filePath
+                //pdfHelper.Initialize(filePath);
+                //string pageJson = pdfHelper.ParsePage(pageToParse);
+
+                //parsePage with filePath
+                //string pageJson = pdfHelper.ParsePage(filePath, pageToParse);
+
+                //initialize with memory stream
+                using var ms = new MemoryStream(File.ReadAllBytes(filePath));
+                pdfHelper.Initialize(ms);
+                string pageJson = pdfHelper.ParsePage(pageToParse);
+
+                // parsePage with memorystream
+                //string pageJson = pdfHelper.ParsePage(ms, pageToParse);
+
+
+
                 var page = JsonPdfSerializer.DeserializePage(pageJson, logger);
                 using var docViewFileStream = File.OpenText(definitionFilePath);
                 var docViewDefinitionString = docViewFileStream.ReadToEnd();
@@ -110,7 +127,7 @@ namespace Wacom.Kiosk.IntegratorUI
                 return new OpenDocumentPageMessage(KioskServer.Sender)
                                 .WithDefinition(docViewDefinitionString)
                                 .WithThumbnails(thumbsStr, thumbnailsTo - thumbnailsFrom + 1)
-                                .ForDocumentPage(page, pdfHelper.DocumentPagesCount)
+                                .ForDocumentPage(page,PageCount)
                                 .AtSelectedAcroField(acroFieldName)
                                 .Build();
             }

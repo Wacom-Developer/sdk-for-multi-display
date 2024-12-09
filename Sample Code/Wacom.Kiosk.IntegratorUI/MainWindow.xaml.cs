@@ -28,9 +28,6 @@ using Wacom.Kiosk.UI.Parsers;
 
 using Page = Wacom.Kiosk.Pdf.Shared.Page;
 using Path = System.IO.Path;
-using Patagames.Pdf.Net;
-using Patagames.Pdf.Net.AcroForms;
-using Patagames.Pdf.Net.BasicTypes;
 
 
 
@@ -574,33 +571,46 @@ namespace Wacom.Kiosk.IntegratorUI
             AppendLog(msg.ToString());
 
             var activeClient = KioskServer.GetActiveClient(msg.Sender.Name);
+            
             if (msg.FromDocument && !string.IsNullOrEmpty(activeClient.DocumentContext.DocumentPath))
             {
-                // We are signing a PDF document
-                string saveAs = activeClient.DocumentContext.DocumentPath;
+                // Logic to save a digitally signed PDF document
 
-                // If document was loaded from this app's resources, prompt to save it elsewhere
-                if (saveAs.StartsWith(AppContext.BaseDirectory))
-                {
-                    saveAs = GetSaveAs(activeClient.DocumentContext.DocumentPath);
-                }
+                /*
+                    // Retrieve the current document path
+                    string saveAs = activeClient.DocumentContext.DocumentPath;
 
-                if (saveAs != null)
-                {
-                    try
+                    // Check if the document was loaded from the application's resources
+                    // If so, prompt the user to save it to a different location
+                    if (saveAs.StartsWith(AppContext.BaseDirectory))
                     {
-                        // Logic for applying a Digital Signature to a Pdf should be called from here
-
-                        activeClient.DocumentContext.DocumentPath = saveAs;
+                        saveAs = GetSaveAs(activeClient.DocumentContext.DocumentPath); // Prompt for "Save As" location
                     }
-                    catch (Exception ex)
+
+                    // Proceed only if the user has provided a valid save location
+                    if (saveAs != null)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        try
                         {
-                            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        });
+                            // Call the logic to apply a digital signature to the PDF document
+                            // (Implementation should be added here)
+
+                            // Update the document path to reflect the new saved location
+                            activeClient.DocumentContext.DocumentPath = saveAs;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any errors that occur during the signing process
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                // Display an error message to the user
+                                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            });
+                        }
                     }
-                }
+                */
+
+
                 // Return to document display
                 ChangeDocumentPage(activeClient, activeClient.DocumentContext.DocumentPageNumber, true);
             }
@@ -764,6 +774,7 @@ namespace Wacom.Kiosk.IntegratorUI
                         sb.Append($"{field.Key}:{field.Value}");
                     }
                 }
+                //Sample for adding extra data to the signature
                 //var hash = HashingUtility.GetHash(sb.ToString());
                 //var extraData = new Dictionary<string, string>
                 //{

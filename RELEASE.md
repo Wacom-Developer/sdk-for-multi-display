@@ -1,8 +1,17 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 2.0.7
+## Version 2.0.9
 
 ## History
+
+### 2.0.9  09 December 2024
+  - Added new Initialize overload for PDF helper with memory stream parameter
+  - Scaled down thumbnail resolution
+  - Bug fixes including:
+    - Fix to tray icon disappearing after attempting to open a second instance
+    - Fix to message parsing failure on PDF input change
+    - Fix to Namedpipes threads not correctly disposing
+    - Fix to TCP Port still being occupied after being disposed of
 
 ### 2.0.7  27 September 2024
   - Updated the SDK to be based on .NET 8
