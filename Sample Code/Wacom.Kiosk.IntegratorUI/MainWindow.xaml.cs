@@ -574,6 +574,8 @@ namespace Wacom.Kiosk.IntegratorUI
             
             if (msg.FromDocument && !string.IsNullOrEmpty(activeClient.DocumentContext.DocumentPath))
             {
+                AppendLog("Signature Accepted. PDF signing and saving not implemented.");
+
                 // Logic to save a digitally signed PDF document
 
                 /*
