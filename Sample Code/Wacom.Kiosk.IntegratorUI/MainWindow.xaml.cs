@@ -415,6 +415,10 @@ namespace Wacom.Kiosk.IntegratorUI
                 {
                     bMirroring = true;
                     SendMessage(new StartMirroringMessage(KioskServer.Sender).Build().ToByteArray());
+                    if (bPrivacy)
+                    {
+                        SendMessage(new SetMirroringScreenBlackMessage(KioskServer.Sender).IsActive(true).Build().ToByteArray());
+                    }
                 }
                 else
                 {
