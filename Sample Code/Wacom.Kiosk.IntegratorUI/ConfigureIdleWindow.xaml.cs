@@ -48,7 +48,7 @@ namespace Wacom.Kiosk.IntegratorUI
             {
                 fileNames = openFileDlg.FileNames.ToList();
             }
-            button_update.IsEnabled = fileNames.Count > 0;
+            button_update.IsEnabled = fileNames?.Count > 0;
         }
 
         private void button_update_Click(object sender, RoutedEventArgs e)

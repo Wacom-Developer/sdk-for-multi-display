@@ -415,6 +415,10 @@ namespace Wacom.Kiosk.IntegratorUI
                 {
                     bMirroring = true;
                     SendMessage(new StartMirroringMessage(KioskServer.Sender).Build().ToByteArray());
+                    if (bPrivacy)
+                    {
+                        SendMessage(new SetMirroringScreenBlackMessage(KioskServer.Sender).IsActive(true).Build().ToByteArray());
+                    }
                 }
                 else
                 {
@@ -574,6 +578,8 @@ namespace Wacom.Kiosk.IntegratorUI
             
             if (msg.FromDocument && !string.IsNullOrEmpty(activeClient.DocumentContext.DocumentPath))
             {
+                AppendLog("Signature Accepted. PDF signing and saving not implemented.");
+
                 // Logic to save a digitally signed PDF document
 
                 /*
