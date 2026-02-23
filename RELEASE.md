@@ -1,8 +1,24 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 2.0.9
+## Version 2.1.2
 
 ## History
+
+### 2.1.2  20 February 2026
+  - Add Romanian language keyboard definition
+  - Added SoftwareOnly render option in web view
+  - Disabled user toggling of privacy if set to on by API
+  - New app config settings:
+    - WebViewConfig, with the config options of:  
+      - BrowserCachePath, that supercedes root level BrowserCachePath. 
+      - ForceSoftwareOnlyRender, that only applies exclusively to web view mode. 
+  - Bug fixes including:
+    - Improvements to web view mode
+    - Fix to efficiency mode performance
+    - Fix to icon tray crash
+    - Fix to tablet display layout
+    - Fixed positioning of mirroring icon
+
 
 ### 2.0.9  09 December 2024
   - Added new Initialize overload for PDF helper with memory stream parameter
