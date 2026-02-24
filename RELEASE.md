@@ -5,6 +5,7 @@
 ## History
 
 ### 2.1.2  20 February 2026
+  - Moved from 32-bit to 64-bit
   - Add Romanian language keyboard definition
   - Added SoftwareOnly render option in web view
   - Disabled user toggling of privacy if set to on by API
