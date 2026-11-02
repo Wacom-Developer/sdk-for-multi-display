@@ -1,14 +1,16 @@
 # Wacom Ink SDK for multi-display
 
 
-> **Version 2.1.2 of the Wacom Ink SDK for multi-display has been released!** 
+> **Version 3.0.0 of the Wacom Ink SDK for multi-display has been released!** 
 >
-> **Version 2.1.2 will be 64-bit, & will require the installation of:**
+> **Version 3.0.0 is 64-bit, and requires the installation of:**
 >
-> -	**64 bit .NET Desktop Runtime 8**
-> -	**64 bit ASP.NET Core Runtime 8**
+> -	**64 bit .NET Desktop Runtime 10**
+> -	**64 bit ASP.NET Core Runtime 10**
 > 
-> **It will additionally require at minimum a machine possessing an i5 processor and 8GB of RAM, with 2GB of free memory (3GB if using videos in Idle mode).**
+> **It additionally requires at minimum a machine possessing an i5 processor and 8GB of RAM, with 2GB of free memory (3GB if using videos in Idle mode).**
+>
+> **Version 3.0 upgrades the SDK to .NET 10, as .NET 8 reached end of life in November 2026. Version 2 will be supported for a limited period after the release of version 3.0.**
 
 ---
 
