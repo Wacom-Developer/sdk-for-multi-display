@@ -1,36 +1,43 @@
 # Wacom Ink SDK for Multi-Display
 
-## Version 2.1.2
+## Version 3.0.0
 
 ## History
 
-### 2.1.2  20 February 2026
+### 3.0.0 02 November 2026
+  - Updated the SDK to be based on .NET 10. The 64-bit .NET Desktop Runtime 10 and ASP.NET Core Runtime 10 are now required
+  - New app config settings within WebViewConfig:
+    - LogSeverity, which sets the logging level of the embedded web browser. Default value = Warning.
+  - Bug fixes including:
+    - Fix to user being able to click through the opaque top/bottom bars
+    - Fix to "Show Message" dialog appearing behind the Idle Video mode window in Citrix
+    - Fix to OpenWebMessage ignoring the IncognitoMode parameter
+
+### 2.1.2 20 February 2026
   - Moved from 32-bit to 64-bit
-  - Add Romanian language keyboard definition
-  - Added SoftwareOnly render option in web view
+  - Added Romanian language keyboard definition
   - Disabled user toggling of privacy if set to on by API
   - New app config settings:
-    - WebViewConfig, with the config options of:  
-      - BrowserCachePath, that supercedes root level BrowserCachePath. 
-      - ForceSoftwareOnlyRender, that only applies exclusively to web view mode. 
+    - WebViewConfig, with the config options of:
+      - BrowserCachePath, which supersedes root level BrowserCachePath.
+      - ForceSoftwareOnlyRender, which applies exclusively to web view mode.
   - Bug fixes including:
     - Improvements to web view mode
     - Fix to efficiency mode performance
-    - Fix to icon tray crash
+    - Fix to tray icon crash
     - Fix to tablet display layout
     - Fixed positioning of mirroring icon
 
-
-### 2.0.9  09 December 2024
+### 2.0.9 09 December 2024
   - Added new Initialize overload for PDF helper with memory stream parameter
   - Scaled down thumbnail resolution
   - Bug fixes including:
     - Fix to tray icon disappearing after attempting to open a second instance
     - Fix to message parsing failure on PDF input change
-    - Fix to Namedpipes threads not correctly disposing
-    - Fix to TCP Port still being occupied after being disposed of
+    - Fix to named pipe threads not correctly disposing
+    - Fix to TCP port still being occupied after being disposed of
 
-### 2.0.7  27 September 2024
+### 2.0.7 27 September 2024
   - Updated the SDK to be based on .NET 8
   - Updated license structure and config
   - Reworked adding extra data to signature method
@@ -42,20 +49,20 @@
     - Fix to latency issue
     - Fix to button not correctly raising event
 
-### 1.4.2  08 July 2024
+### 1.4.2 08 July 2024
   - New app config settings:
-    - UseNamedPipe: boolean that doesn't utilize TcpPort when true
+    - UseNamedPipe: Boolean value that doesn't utilize TcpPort when true
     - ClientCertificateThumbprint: certificate thumbprint for added security
-    - WindowBgColor: global parameter that adds 
+    - WindowBgColor: global parameter that sets the window's background color
   - New IdleConfig parameter:
-    - BackgroundColor: default background added for IdleConfig  
+    - BackgroundColor: default background added for IdleConfig
   - New Open Idle parameter WithBackGroundColor to set background color
 
-### 1.3.5  12 April 2024
-  - Added Citrix support for multi-user access 
+### 1.3.5 12 April 2024
+  - Added Citrix support for multi-user access
 
 ### 1.3.3 19 January 2024
-  - Added support for signature document binding 
+  - Added support for signature document binding
   - Added multiplier to scroll amounts in SendMouseWheelEvent() call
   - Improved positioning and sizing of CheckBoxes & RadioButtons
 
@@ -66,71 +73,67 @@
   - Bug fix where PDFs were unable to be deleted after opening them within the sample app
 
 ### 1.3.0 26 June 2023
-  New app config settings:
-  - BrowserCachePath. This value allows users to set the file directory to keep cached data. Default value = null.
+  - New app config settings:
+    - BrowserCachePath. This value allows users to set the file directory to keep cached data. Default value = null.
   - Extended OpenWebMessage to include an Incognito mode parameter
-  Added message for:
-  - ClearBrowserCookiesMessage
+  - Added message for:
+    - ClearBrowserCookiesMessage
   - BrowserNavigateToMessage is now deprecated
 
-  ### 1.2.1  06 October 2022
+### 1.2.1 06 October 2022
+  - Bug fix: Cef Browser was not displaying some web content
 
-  - Bug fix: Cef Browser was not displaying some Web content
-
-  ### 1.2.0  26 April 2022
+### 1.2.0 26 April 2022
   - Added messages for:
-	  - SetElementValueMEssage
-	  - SetDocumentZoomMessage
-	  - ShowDialogMessage
-	  - DismissDialogMessage
-
+    - SetElementValueMessage
+    - SetDocumentZoomMessage
+    - ShowDialogMessage
+    - DismissDialogMessage
   - Added config setting:
-	  - FatalErrorMessageBox
-    
+    - FatalErrorMessageBox
   - Enhancements to thumbnails
   - Improved user navigation between fields
   - Bug fixes including issues with zooming and mirroring
 
-### 1.0.11  19 Jan  2022
+### 1.0.11 19 January 2022
   - Added support for Creative versions of the DTK-1660
   - Added support for Citrix
 
-### 1.0.10  27 July  2021
-  - Add config option to control display of message box when the tray app closes itself down
+### 1.0.10 27 July 2021
+  - Added config option to control display of message box when the tray app closes itself down
     setting: FatalErrorMessageBox
 
 ### 1.0.9 15 July 2021
-  - Bug fixes 
+  - Bug fixes
   - Client v1.0.9
-  - Nuget v1.0.9
-    
+  - NuGet v1.0.9
+
 ### 1.0.8 06 July 2021
   - Bug fixes
   - Client v1.0.8
-  - Nuget v1.0.8
+  - NuGet v1.0.8
 
-### 1.0.6   29 March 2021
+### 1.0.6 29 March 2021
   - Bug fixes
   - Client v1.0.6
-  - NuGet  v1.0.6
+  - NuGet v1.0.6
 
-### 1.0.5   16 March  2021
+### 1.0.5 16 March 2021
   - Bug fixes
 
-### 1.0.4   28 January  2021
+### 1.0.4 28 January 2021
   - Repackaged zip
   - Client v1.0.1
-  - NuGet  v1.0.1.5
-  
-### 1.0.3   January  2021
+  - NuGet v1.0.1.5
+
+### 1.0.3 January 2021
   - Bug fixes including media and keyboard layout
 
-### 1.0.2   December 2020
+### 1.0.2 December 2020
   - Bug fixes including drop-down selection, touch tablet support
-  
-### 1.0.1   03 November 2020
+
+### 1.0.1 03 November 2020
   - Initial QA release
 
-### 1.0.0   30 July 2020
+### 1.0.0 30 July 2020
   - Initial beta release
-  
