@@ -49,6 +49,7 @@
             <Button Content="Update app config" Name="btnUpdateConfig" Click="UpdateConfigClick"/>
             <Button x:Name="btnUpdateLayout" Content="Update keyboard layout" Click="UpdateLayoutClick"/>
             <Button x:Name="btnClearBrowserData" Content="Clear Browser Cookies" Click="ClearBrowserDataClick"/>
+            <Button x:Name="btnClearLicense" Content="Clear License" Click="ClearLicenseClick"/>
             <Button x:Name="btnClearLog" Content="Clear Logs" Margin="5,100,5,0" Click="ClearLogClick"/>
         </StackPanel>
 

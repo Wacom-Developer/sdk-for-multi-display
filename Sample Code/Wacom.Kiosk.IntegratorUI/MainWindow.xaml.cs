@@ -1000,6 +1000,18 @@ namespace Wacom.Kiosk.IntegratorUI
                 MessageBox.Show("No Client Connected");
             }
         }
+
+        private void ClearLicenseClick(object sender, RoutedEventArgs e)
+        {
+            if (ActiveClient != null)
+            {
+                SendMessage(new DeactivateLicenseMessage(KioskServer.Sender).Build().ToByteArray());
+            }
+            else
+            {
+                MessageBox.Show("No Client Connected");
+            }
+        }
     }
 }
                     

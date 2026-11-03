@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Version>2.0.7</Version>
@@ -56,13 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="Pdfium.Net.SDK" Version="4.94.2704" />
-    <PackageReference Include="Wacom.Kiosk.SDK" Version="2.1.2" />
-    <PackageReference Include="WatsonTcp" Version="6.0.6" />
+    <PackageReference Include="Pdfium.Net.SDK" Version="5.1.4" />
+    <PackageReference Include="Wacom.Kiosk.SDK" Version="3.0.1" />
+    <PackageReference Include="WatsonTcp" Version="6.3.1" />
     <PackageReference Include="XmpCore" Version="6.1.10.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Integrator.Logger.Serilog\Integrator.Logger.Serilogger.csproj" />
